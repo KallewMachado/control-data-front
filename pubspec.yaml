@@ -38,6 +38,7 @@ dependencies:
   flutter_modular: ^6.3.2
   mobx: ^2.2.1
   flutter_mobx: ^2.2.0
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
