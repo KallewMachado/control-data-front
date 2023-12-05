@@ -1,7 +1,6 @@
+import 'package:control_data/app/modules/home/views/home_page.dart';
+import 'package:control_data/app/modules/home/views/home_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'home_store.dart';
-
-import 'home_page.dart';
 
 class HomeModule extends Module {
   @override
