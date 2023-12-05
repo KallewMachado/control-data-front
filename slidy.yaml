@@ -1,0 +1,23 @@
+slidy: "1"
+variables:
+  runner: flutter pub run build_runner
+  clean: flutter clean
+  get: flutter pub get
+scripts:
+  prodapk: fvm flutter build apk --release lib/main.dart
+  devapk: fvm flutter build apk --release lib/main_dev.dart
+  prodapb: fvm flutter build appbundle --release lib/main_prod.dart
+  mobxf: ${Local.var.runner} build --delete-conflicting-outputs
+  mobxw: ${Local.var.runner} watch --delete-conflicting-outputs
+  cleanup:
+    description: "cleanup project"
+    steps:
+      - name: "Clean"
+        run: fvm flutter clean
+
+      - name: "GetPackages"
+        description: "Get packages"
+        run: fvm flutter pub get
+
+      - name: "MobxBuild"
+        run: ${Local.var.runner} build --delete-conflicting-outputs
