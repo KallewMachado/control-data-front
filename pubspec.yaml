@@ -39,6 +39,9 @@ dependencies:
   mobx: ^2.2.1
   flutter_mobx: ^2.2.0
   uuid: ^3.0.7
+  supabase_flutter: ^1.10.25
+  flutter_config: ^2.0.2
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:
