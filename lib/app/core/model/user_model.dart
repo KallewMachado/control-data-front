@@ -5,15 +5,14 @@
 
 import 'dart:convert';
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String userToJson(User data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
-class User {
+class UserModel {
   String id;
   String name;
   String email;
-  String? password;
   int dateBirth;
   String fone;
   String street;
@@ -24,7 +23,7 @@ class User {
   int createdAt;
   List<String> demands;
 
-  User({
+  UserModel({
     required this.id,
     required this.name,
     required this.email,
@@ -37,10 +36,9 @@ class User {
     required this.userCreated,
     required this.createdAt,
     required this.demands,
-    this.password,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         name: json["name"],
         email: json["email"],
