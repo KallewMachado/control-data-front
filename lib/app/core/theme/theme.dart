@@ -17,4 +17,9 @@ ThemeData get darkTheme => ThemeData(
         backgroundColor: darkColorScheme.primary,
         foregroundColor: Colors.black,
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
     );
