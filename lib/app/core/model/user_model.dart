@@ -13,15 +13,15 @@ class UserModel {
   String id;
   String name;
   String email;
-  int dateBirth;
+  DateTime dateBirth;
   String fone;
   String street;
   String num;
   String district;
-  String complement;
+  String? complement;
   String? userCreated;
-  int createdAt;
-  List<String> demands;
+  DateTime? createdAt;
+  List demands;
 
   UserModel({
     required this.id,
@@ -34,7 +34,7 @@ class UserModel {
     required this.district,
     required this.complement,
     required this.userCreated,
-    required this.createdAt,
+    this.createdAt,
     required this.demands,
   });
 
@@ -42,14 +42,14 @@ class UserModel {
         id: json["id"],
         name: json["name"],
         email: json["email"],
-        dateBirth: json["date_birth"],
+        dateBirth: DateTime.parse(json["date_birth"]),
         fone: json["fone"],
         street: json["street"],
         num: json["num"],
         district: json["district"],
         complement: json["complement"],
         userCreated: json["user_created"] ?? '',
-        createdAt: json["created_at"],
+        createdAt: DateTime.parse(json["created_at"]),
         demands: json["demands"],
       );
 
@@ -65,5 +65,6 @@ class UserModel {
         "complement": complement,
         "user_created": userCreated,
         "created_at": createdAt,
+        "demands": demands
       };
 }
