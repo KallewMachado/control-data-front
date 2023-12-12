@@ -5,7 +5,7 @@ ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
       colorScheme: lightColorScheme,
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: darkColorScheme.primary,
+        backgroundColor: lightColorScheme.primary,
         foregroundColor: Colors.black,
       ),
       inputDecorationTheme: InputDecorationTheme(
