@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:control_data/app/core/model/auth_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:control_data/app/core/model/user_model.dart';
 
 abstract class UserRepository {
-  Future<void> createUser(AuthModel auth);
-  Future<UserModel> login(String user);
-  Future<UserModel> newUser(String json);
+  Future<AuthModel> createUser(AuthModel auth);
+  Future<UserModel> login(AuthModel auth);
+  Future<UserModel> newUser(Map<String, dynamic> json);
   Future<List<UserModel>> getAllUsers(String json);
   Future<UserModel> updateUser(String json);
   Future<void> deleteUser(String json);
@@ -13,13 +15,21 @@ abstract class UserRepository {
 }
 
 class UserRepositoryImpl implements UserRepository {
-  final _supabase = supabase.Supabase.instance.client;
+  final _supabase = Supabase.instance.client;
 
   @override
-  Future<void> createUser(AuthModel auth) async {
+  Future<AuthModel> createUser(AuthModel auth) async {
     try {
-      await _supabase.auth.signUp(email: auth.email, password: auth.password);
-    } on supabase.AuthException catch (_) {
+      final AuthResponse res = await _supabase.auth
+          .signUp(email: auth.email, password: auth.password);
+
+      User? result = res.user;
+
+      AuthModel user =
+          AuthModel(id: result!.id, email: result.email!, password: '');
+
+      return user;
+    } on AuthException catch (_) {
       rethrow;
     }
   }
@@ -35,8 +45,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserModel> login(String user) {
-    throw UnimplementedError();
+  Future<UserModel> login(AuthModel auth) async {
+    final AuthResponse res = await _supabase.auth.signInWithPassword(
+      email: auth.email,
+      password: auth.password,
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
+
+    final data = await _supabase.from('users').select().eq('id', user?.id);
+
+    UserModel? result = UserModel.fromJson(data[0]);
+
+    return result;
   }
 
   @override
@@ -45,8 +66,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserModel> newUser(String json) {
-    throw UnimplementedError();
+  Future<UserModel> newUser(Map<String, dynamic> json) async {
+    var response = await _supabase.from('users').insert(json).select();
+
+    UserModel user = userModelFromJson(jsonEncode(response[0]));
+
+    return user;
   }
 
   @override
