@@ -13,6 +13,11 @@ ThemeData get lightTheme => ThemeData(
           borderRadius: BorderRadius.circular(20),
         ),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color?>(
+                lightColorScheme.primaryContainer)),
+      ),
     );
 
 ThemeData get darkTheme => ThemeData(
@@ -26,5 +31,10 @@ ThemeData get darkTheme => ThemeData(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color?>(
+                darkColorScheme.primaryContainer)),
       ),
     );
