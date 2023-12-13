@@ -18,6 +18,8 @@ abstract class _AuthStoreBase with Store {
   Future<AuthModel> createUser(AuthModel auth) async {
     try {
       return await _userRepository.createUser(auth);
+    } on AuthException catch (_) {
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -26,6 +28,8 @@ abstract class _AuthStoreBase with Store {
   Future<UserModel> login(AuthModel auth) async {
     try {
       return await _userRepository.login(auth);
+    } on AuthException catch (_) {
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -34,7 +38,9 @@ abstract class _AuthStoreBase with Store {
   Future<UserModel> newUser(Map<String, dynamic> json) async {
     try {
       return await _userRepository.newUser(json);
-    } on PostgrestException catch (e) {
+    } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
       rethrow;
     }
   }
