@@ -50,7 +50,6 @@ class UserRepositoryImpl implements UserRepository {
       email: auth.email,
       password: auth.password,
     );
-    final Session? session = res.session;
     final User? user = res.user;
 
     final data = await _supabase.from('users').select().eq('id', user?.id);
