@@ -13,7 +13,15 @@ class AuthStore = _AuthStoreBase with _$AuthStore;
 abstract class _AuthStoreBase with Store {
   final UserRepository _userRepository;
 
+  @observable
+  bool obscurePassword = true;
+
   _AuthStoreBase(this._userRepository);
+
+  @action
+  changeObscurePassword() {
+    obscurePassword = !obscurePassword;
+  }
 
   Future<AuthModel> createUser(AuthModel auth) async {
     try {
