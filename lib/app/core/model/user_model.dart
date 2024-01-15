@@ -12,6 +12,7 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 class UserModel {
   String id;
   String name;
+  String cpf;
   String email;
   DateTime dateBirth;
   String fone;
@@ -21,7 +22,7 @@ class UserModel {
   String? complement;
   String? userCreated;
   DateTime? createdAt;
-  List demands;
+  List? demands;
 
   UserModel({
     required this.id,
@@ -36,6 +37,7 @@ class UserModel {
     required this.userCreated,
     this.createdAt,
     required this.demands,
+    required this.cpf,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -51,6 +53,7 @@ class UserModel {
         userCreated: json["user_created"] ?? '',
         createdAt: DateTime.parse(json["created_at"]),
         demands: json["demands"],
+        cpf: json["cpf"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +68,7 @@ class UserModel {
         "complement": complement,
         "user_created": userCreated,
         "created_at": createdAt,
-        "demands": demands
+        "demands": demands,
+        "cpf": cpf,
       };
 }
