@@ -18,6 +18,18 @@ ThemeData get lightTheme => ThemeData(
             backgroundColor: MaterialStateProperty.all<Color?>(
                 lightColorScheme.primaryContainer)),
       ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return lightColorScheme.primary;
+              }
+              return lightColorScheme.primaryContainer;
+            },
+          ),
+        ),
+      ),
     );
 
 ThemeData get darkTheme => ThemeData(
@@ -36,5 +48,17 @@ ThemeData get darkTheme => ThemeData(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color?>(
                 darkColorScheme.primaryContainer)),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return darkColorScheme.primary;
+              }
+              return darkColorScheme.primaryContainer;
+            },
+          ),
+        ),
       ),
     );
