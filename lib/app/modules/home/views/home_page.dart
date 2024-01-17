@@ -31,8 +31,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          title: Text(
+            selection.first.title,
+            style: theme.textTheme.titleLarge,
+          ),
+          centerTitle: true),
       body: const RouterOutlet(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SegmentedButton<Pages>(
