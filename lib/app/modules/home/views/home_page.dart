@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'home_store.dart';
 
@@ -11,8 +10,18 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+enum Pages {
+  initial(title: 'Inicio'),
+  voters(title: 'Usuarios'),
+  config(title: 'Configuração');
+
+  const Pages({required this.title});
+  final String title;
+}
+
 class _HomePageState extends State<HomePage> {
   late final HomeStore store;
+  Set<Pages> selection = <Pages>{Pages.initial};
 
   @override
   void initState() {
@@ -22,9 +31,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Observer(
-        builder: (context) => Text('${store.counter}'),
+    return Scaffold(
+      appBar: AppBar(),
+      body: const RouterOutlet(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SegmentedButton<Pages>(
+        showSelectedIcon: false,
+        segments: <ButtonSegment<Pages>>[
+          ButtonSegment<Pages>(
+              value: Pages.initial, label: Text(Pages.initial.title)),
+          ButtonSegment<Pages>(
+              value: Pages.voters, label: Text(Pages.voters.title)),
+          ButtonSegment<Pages>(
+              value: Pages.config, label: Text(Pages.config.title)),
+        ],
+        selected: selection,
+        onSelectionChanged: (Set<Pages> newSelection) {
+          var router = newSelection.first.name;
+          setState(() {
+            selection = newSelection;
+            Modular.to.navigate('/$router');
+          });
+        },
+        multiSelectionEnabled: false,
       ),
     );
   }
