@@ -8,6 +8,8 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Modular.setInitialRoute('/initial');
+
     return MaterialApp.router(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -15,7 +17,7 @@ class AppWidget extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       title: 'Control Data',
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkTheme,
       routerConfig: Modular.routerConfig,
