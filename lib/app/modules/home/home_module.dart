@@ -1,19 +1,16 @@
+import 'package:control_data/app/core/store/app_store.dart';
 import 'package:control_data/app/modules/home/views/home_page.dart';
 import 'package:control_data/app/modules/home/views/home_store.dart';
-import 'package:control_data/app/modules/initial/initial_store.dart';
-import 'package:control_data/app/modules/users/users_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../configurations/configurations_page.dart';
-import '../initial/initial_page.dart';
-import '../users/users_page.dart';
+import '../configurations/configurations_module.dart';
+import '../initial/initial_module.dart';
+import '../users/user_module.dart';
 
 class HomeModule extends Module {
   @override
   void binds(i) {
-    i.addLazySingleton(HomeStore.new);
-    i.addLazySingleton(InitialStore.new);
-    i.addLazySingleton(UsersStore.new);
+    i.addLazySingleton<HomeStore>(HomeStore.new);
   }
 
   @override
@@ -22,9 +19,9 @@ class HomeModule extends Module {
       Modular.initialRoute,
       child: (_) => const HomePage(),
       children: [
-        ChildRoute('/initial', child: (_) => const InitialPage()),
-        ChildRoute('/voters', child: (context) => UsersPage()),
-        ChildRoute('/config', child: (context) => ConfigurationsPage()),
+        ModuleRoute('/initial', module: InitialModule()),
+        ModuleRoute('/voters', module: UserModule()),
+        ModuleRoute('/config', module: ConfigurationsModule()),
       ],
     );
   }
