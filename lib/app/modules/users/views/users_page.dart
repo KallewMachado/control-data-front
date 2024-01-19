@@ -1,5 +1,5 @@
-import 'package:control_data/app/modules/users/users_store.dart';
-import 'package:control_data/app/modules/users/widgets/card_user_widget.dart';
+import 'package:control_data/app/modules/users/views/users_store.dart';
+import 'package:control_data/app/modules/users/views/widgets/card_user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
