@@ -2,7 +2,6 @@ import 'package:control_data/app/modules/home/views/home_page.dart';
 import 'package:control_data/app/modules/home/views/home_store.dart';
 import 'package:control_data/app/modules/initial/initial_store.dart';
 import 'package:control_data/app/modules/users/users_store.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../configurations/configurations_page.dart';
@@ -25,9 +24,7 @@ class HomeModule extends Module {
       children: [
         ChildRoute('/initial', child: (_) => const InitialPage()),
         ChildRoute('/voters', child: (context) => UsersPage()),
-        ChildRoute('/config',
-            child: (context) =>
-                const ConfigurationsPage(title: 'config', color: Colors.green)),
+        ChildRoute('/config', child: (context) => ConfigurationsPage()),
       ],
     );
   }
