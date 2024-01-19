@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           var router = newSelection.first.name;
           setState(() {
             selection = newSelection;
-            Modular.to.navigate('/$router');
+            Modular.to.navigate('/$router/');
           });
         },
         multiSelectionEnabled: false,
