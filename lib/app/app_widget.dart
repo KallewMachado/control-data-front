@@ -1,5 +1,7 @@
+import 'package:control_data/app/core/store/app_store.dart';
 import 'package:control_data/app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -10,17 +12,20 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Modular.setInitialRoute('/initial');
 
-    return MaterialApp.router(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      title: 'Control Data',
-      themeMode: ThemeMode.light,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      routerConfig: Modular.routerConfig,
-    );
+    final appStore = Modular.get<AppStore>();
+    return Observer(builder: (context) {
+      return MaterialApp.router(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        title: 'Control Data',
+        themeMode: appStore.themeMode,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        routerConfig: Modular.routerConfig,
+      );
+    });
   }
 }
