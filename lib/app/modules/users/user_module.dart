@@ -3,8 +3,6 @@ import 'package:control_data/app/modules/users/views/users_page.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/views/register_user_page.dart';
-
 class UserModule extends Module {
   @override
   void binds(i) {
@@ -17,6 +15,5 @@ class UserModule extends Module {
   void routes(r) {
     super.routes(r);
     r.child(Modular.initialRoute, child: (context) => UsersPage());
-    r.child('/register/user', child: (_) => const RegisterUserPage());
   }
 }
