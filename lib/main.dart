@@ -1,8 +1,8 @@
+import 'package:control_data/app/core/utils/hive_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/app_module.dart';
@@ -13,7 +13,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
 
-  await Hive.initFlutter();
+  await HiveConfig.hiveStart();
 
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,
