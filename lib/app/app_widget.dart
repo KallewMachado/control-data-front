@@ -10,7 +10,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/initial');
+    Modular.setInitialRoute('/home/initial/');
 
     final appStore = Modular.get<AppStore>();
     return Observer(builder: (context) {
