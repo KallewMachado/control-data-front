@@ -4,7 +4,7 @@ import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
-  const HomePage({Key? key, this.title = 'Home'}) : super(key: key);
+  const HomePage({super.key, this.title = 'Home'});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           var router = newSelection.first.name;
           setState(() {
             selection = newSelection;
-            Modular.to.navigate('/$router/');
+            Modular.to.navigate('/home/$router/');
           });
         },
         multiSelectionEnabled: false,
