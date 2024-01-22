@@ -1,4 +1,3 @@
-import 'package:control_data/app/core/repositories/user_repository.dart';
 import 'package:control_data/app/core/views/register_new_user_page.dart';
 import 'package:control_data/app/modules/auth/views/auth_page.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
@@ -11,7 +10,6 @@ class AuthModule extends Module {
   void binds(i) {
     super.binds(i);
     i.addLazySingleton<AuthStore>(AuthStore.new);
-    i.add<UserRepository>(UserRepositoryImpl.new);
   }
 
   @override
