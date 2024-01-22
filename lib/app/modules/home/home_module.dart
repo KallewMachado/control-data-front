@@ -2,6 +2,7 @@ import 'package:control_data/app/modules/home/views/home_page.dart';
 import 'package:control_data/app/modules/home/views/home_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../core/views/register_user_page.dart';
 import '../configurations/configurations_module.dart';
 import '../initial/initial_module.dart';
 import '../users/user_module.dart';
@@ -23,5 +24,6 @@ class HomeModule extends Module {
         ModuleRoute('/config', module: ConfigurationsModule()),
       ],
     );
+    r.child('/register/user', child: (_) => const RegisterUserPage());
   }
 }
