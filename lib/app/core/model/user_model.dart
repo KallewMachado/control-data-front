@@ -5,23 +5,41 @@
 
 import 'dart:convert';
 
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'user_model.g.dart';
+
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
-class UserModel {
+@HiveType(typeId: 0)
+class UserModel extends HiveObject {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String cpf;
+  @HiveField(3)
   String email;
+  @HiveField(4)
   DateTime dateBirth;
+  @HiveField(5)
   String fone;
+  @HiveField(6)
   String street;
+  @HiveField(7)
   String num;
+  @HiveField(8)
   String district;
+  @HiveField(9)
   String? complement;
+  @HiveField(10)
   String? userCreated;
+  @HiveField(11)
   DateTime? createdAt;
+  @HiveField(12)
   List? demands;
 
   UserModel({
@@ -71,4 +89,8 @@ class UserModel {
         "demands": demands,
         "cpf": cpf,
       };
+
+  static List<UserModel> fromJsonList(List? list) {
+    return list!.map<UserModel>((item) => UserModel.fromJson(item)).toList();
+  }
 }
