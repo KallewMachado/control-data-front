@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class ConfigurationsPage extends StatelessWidget {
-  ConfigurationsPage({Key? key}) : super(key: key);
+  ConfigurationsPage({super.key});
 
   final _appStore = Modular.get<AppStore>();
 
