@@ -1,16 +1,20 @@
+import 'package:control_data/app/modules/auth/auth_module.dart';
+import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'core/repositories/user_repository.dart';
 import 'core/store/app_store.dart';
-import 'modules/home/home_module.dart';
 
 class AppModule extends Module {
   @override
   void binds(i) {
     i.addLazySingleton<AppStore>(AppStore.new);
+    i.addLazySingleton<AuthStore>(AuthStore.new);
+    i.add<UserRepository>(UserRepositoryImpl.new);
   }
 
   @override
   void routes(r) {
-    r.module(Modular.initialRoute, module: HomeModule());
+    r.module(Modular.initialRoute, module: AuthModule());
   }
 }
