@@ -7,7 +7,7 @@ abstract class UserRepository {
   Future<AuthModel> createUser(AuthModel auth);
   Future<UserModel> login(AuthModel auth);
   Future<UserModel> newUser(Map<String, dynamic> json);
-  Future<List<UserModel>> getAllUsers(String json);
+  Future<List<UserModel>> getAllUsers();
   Future<UserModel> updateUser(String json);
   Future<void> deleteUser(String json);
   Future<void> logout(String json);
@@ -39,8 +39,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<List<UserModel>> getAllUsers(String json) {
-    throw UnimplementedError();
+  Future<List<UserModel>> getAllUsers() async {
+    List<UserModel> users = [];
+    final data = await _supabase.from('users').select();
+    var response = UserModel.fromJsonList(data);
+
+    users.addAll(response);
+
+    return users;
   }
 
   @override
@@ -51,7 +57,7 @@ class UserRepositoryImpl implements UserRepository {
     );
     final User? user = res.user;
 
-    final data = await _supabase.from('users').select().eq('id', user?.id);
+    final data = await _supabase.from('users').select().eq('id', '${user?.id}');
 
     UserModel? result = UserModel.fromJson(data[0]);
 
