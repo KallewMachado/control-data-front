@@ -9,7 +9,7 @@ abstract class UserRepository {
   Future<UserModel> newUser(Map<String, dynamic> json);
   Future<List<UserModel>> getAllUsers();
   Future<UserModel> updateUser(String json);
-  Future<void> deleteUser(String json);
+  Future<UserModel> deleteUser(String id);
   Future<void> logout(String json);
 }
 
@@ -31,11 +31,6 @@ class UserRepositoryImpl implements UserRepository {
     } on AuthException catch (_) {
       rethrow;
     }
-  }
-
-  @override
-  Future<void> deleteUser(String json) {
-    throw UnimplementedError();
   }
 
   @override
@@ -81,5 +76,14 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel> updateUser(String json) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<UserModel> deleteUser(String id) async {
+    var response = await _supabase.from('users').delete().eq('id', id).select();
+
+    UserModel user = userModelFromJson(jsonEncode(response[0]));
+
+    return user;
   }
 }
