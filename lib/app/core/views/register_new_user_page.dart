@@ -253,7 +253,6 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                             "num": _numController.text.trim(),
                             "district": _districtController.text.trim(),
                             "complement": _complementController.text.trim(),
-                            "user_created": result.id,
                           };
 
                           await _authStore.newUser(json);
