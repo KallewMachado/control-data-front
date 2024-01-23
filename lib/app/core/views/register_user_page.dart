@@ -1,11 +1,12 @@
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../model/auth_model.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterUserPage extends StatefulWidget {
   const RegisterUserPage({super.key});
@@ -16,12 +17,12 @@ class RegisterUserPage extends StatefulWidget {
 
 class _RegisterUserPageState extends State<RegisterUserPage> {
   final _authStore = Modular.get<AuthStore>();
+  final _userStore = Modular.get<UsersStore>();
   final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _cpfController = TextEditingController();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
   final _endressController = TextEditingController();
   final _numController = TextEditingController();
   final _foneController = TextEditingController();
@@ -29,14 +30,14 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
   final _complementController = TextEditingController();
   final _dateBirthController = TextEditingController();
 
+  var uuid = const Uuid();
+
   final isRequiredField = 'Este campo é obrigatório!';
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
     _endressController.dispose();
     _numController.dispose();
     _foneController.dispose();
@@ -62,7 +63,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
               child: Column(
                 children: [
                   Text(
-                    'Novo Usuario',
+                    'Registrar Usuario',
                     style: theme.textTheme.headlineMedium
                         ?.copyWith(color: theme.colorScheme.primary),
                   ),
@@ -102,32 +103,6 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                     label: const Text('E-mail'),
                     validator: (email) {
                       if (email == null || email.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _passwordController,
-                    obscureText: true,
-                    label: const Text('Senha'),
-                    validator: (password) {
-                      if (password == null || password.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    label: const Text('Confirmar Senha'),
-                    validator: (confirmPass) {
-                      if (confirmPass == null || confirmPass.isEmpty) {
                         return isRequiredField;
                       } else {
                         return null;
@@ -215,45 +190,29 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                   CustomTextFormWidget(
                     controller: _complementController,
                     label: const Text('Complemento'),
-                    validator: (complement) {
-                      if (complement == null || complement.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
                   ),
                   const SizedBox(height: 40),
                   OutlinedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
-                          AuthModel auth = AuthModel(
-                            id: '',
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
-                          );
-
                           DateTime date = DateTime.parse(_dateBirthController
                               .text
                               .replaceAll('/', '-')
                               .trim());
                           String dateBirth = date.toString().split(' ')[0];
 
-                          AuthModel result = await _authStore.createUser(auth);
-
                           Map<String, dynamic> json = {
-                            "id": result.id,
                             "name": _nameController.text.trim(),
                             "cpf": _cpfController.text.trim(),
-                            "email": result.email,
+                            "email": _emailController.text.trim(),
                             "date_birth": dateBirth,
                             "fone": _foneController.text.trim(),
                             "street": _endressController.text.trim(),
                             "num": _numController.text.trim(),
                             "district": _districtController.text.trim(),
                             "complement": _complementController.text.trim(),
-                            "user_created": result.id,
+                            "user_created": _userStore.user.id,
                           };
 
                           await _authStore.newUser(json);
@@ -266,7 +225,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                         }
                       }
                     },
-                    child: const Text('Registrar'),
+                    child: const Text('Salvar'),
                   ),
                   ElevatedButton(
                     onPressed: () {
