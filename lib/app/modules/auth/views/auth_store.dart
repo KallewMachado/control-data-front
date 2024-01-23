@@ -3,6 +3,7 @@
 import 'package:control_data/app/core/model/auth_model.dart';
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:control_data/app/core/repositories/user_repository.dart';
+import 'package:control_data/app/core/utils/hive_config.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -12,6 +13,7 @@ class AuthStore = _AuthStoreBase with _$AuthStore;
 
 abstract class _AuthStoreBase with Store {
   final UserRepository _userRepository;
+  final hive = HiveConfig();
 
   @observable
   bool obscurePassword = true;
@@ -35,7 +37,10 @@ abstract class _AuthStoreBase with Store {
 
   Future<UserModel> login(AuthModel auth) async {
     try {
-      return await _userRepository.login(auth);
+      var user = await _userRepository.login(auth);
+      await hive.userBox.clear();
+      await hive.userBox.add(user);
+      return user;
     } on AuthException catch (_) {
       rethrow;
     } catch (e) {
