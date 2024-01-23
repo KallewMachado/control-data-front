@@ -1,3 +1,4 @@
+import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'home_store.dart';
@@ -21,12 +22,15 @@ enum Pages {
 
 class _HomePageState extends State<HomePage> {
   late final HomeStore store;
+  late final UsersStore usersStore;
   Set<Pages> selection = <Pages>{Pages.initial};
 
   @override
   void initState() {
     super.initState();
     store = Modular.get<HomeStore>();
+    usersStore = Modular.get<UsersStore>();
+    Modular.to.navigate('/home/initial/');
   }
 
   @override
