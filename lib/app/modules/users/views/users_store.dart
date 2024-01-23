@@ -66,4 +66,17 @@ abstract class UsersStoreBase with Store {
       print(e);
     }
   }
+
+  @action
+  Future<void> deleteUser(String id) async {
+    try {
+      var user = await _repository.deleteUser(id);
+
+      usersList.removeWhere((value) => value.id == user.id);
+    } on PostgrestException catch (e) {
+      print(e.message);
+    } catch (e) {
+      print(e);
+    }
+  }
 }
