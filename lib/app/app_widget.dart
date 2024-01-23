@@ -10,8 +10,6 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/home/initial/');
-
     final appStore = Modular.get<AppStore>();
     return Observer(builder: (context) {
       return MaterialApp.router(
