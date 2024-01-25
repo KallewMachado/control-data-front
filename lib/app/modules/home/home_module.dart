@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/views/register_user_page.dart';
 import '../configurations/configurations_module.dart';
+import '../demands/demands_module.dart';
 import '../initial/initial_module.dart';
 import '../users/user_module.dart';
 
@@ -25,5 +26,6 @@ class HomeModule extends Module {
       ],
     );
     r.child('/register/user', child: (_) => const RegisterUserPage());
+    r.module('/demands', module: DemandsModule());
   }
 }
