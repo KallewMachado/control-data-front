@@ -32,6 +32,14 @@ mixin _$UsersStore on UsersStoreBase, Store {
     return _$getAllUsersAsyncAction.run(() => super.getAllUsers());
   }
 
+  late final _$deleteUserAsyncAction =
+      AsyncAction('UsersStoreBase.deleteUser', context: context);
+
+  @override
+  Future<void> deleteUser(String id) {
+    return _$deleteUserAsyncAction.run(() => super.deleteUser(id));
+  }
+
   @override
   String toString() {
     return '''
