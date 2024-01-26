@@ -12,21 +12,20 @@ class CardUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).colorScheme;
     DateTime dateBirth = user.dateBirth;
     var date = DateFormat('dd/MM/yyyy');
     return Card(
+      elevation: 5,
       child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 10),
+        shape: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         onTap: () {
           Modular.to.pushNamed('/home/demands/');
         },
-        shape: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          borderSide: BorderSide(
-            width: 1,
-            color: theme.outlineVariant,
-          ),
-        ),
         leading: const Icon(Icons.person),
         title: Text(user.name),
         subtitle: Text(date.format(dateBirth)),
