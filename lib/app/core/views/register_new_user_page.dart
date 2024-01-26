@@ -215,13 +215,6 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                   CustomTextFormWidget(
                     controller: _complementController,
                     label: const Text('Complemento'),
-                    validator: (complement) {
-                      if (complement == null || complement.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
                   ),
                   const SizedBox(height: 40),
                   OutlinedButton(
