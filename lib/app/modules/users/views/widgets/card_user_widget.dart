@@ -24,7 +24,7 @@ class CardUserWidget extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Modular.to.pushNamed('/home/demands/');
+          Modular.to.pushNamed('/home/demands/', arguments: user);
         },
         leading: const Icon(Icons.person),
         title: Text(user.name),
