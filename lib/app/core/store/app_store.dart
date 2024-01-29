@@ -9,5 +9,5 @@ class AppStore = AppStoreBase with _$AppStore;
 
 abstract class AppStoreBase with Store {
   @observable
-  ThemeMode? themeMode = ThemeMode.system;
+  ThemeMode? themeMode = ThemeMode.dark;
 }
