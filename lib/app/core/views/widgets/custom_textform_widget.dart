@@ -61,7 +61,7 @@ class _CustomTextFormWidgetState extends State<CustomTextFormWidget> {
           late DateTime? pickedDate;
 
           pickedDate = await showDatePicker(
-            locale: const Locale('pt'),
+            locale: const Locale('pt', 'BR'),
             context: context,
             initialDate: dateNow,
             firstDate: DateTime(1900),
