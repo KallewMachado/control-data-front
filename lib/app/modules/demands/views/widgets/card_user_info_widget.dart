@@ -1,7 +1,9 @@
+import 'package:control_data/app/core/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class CardUserInfoWidget extends StatefulWidget {
-  const CardUserInfoWidget({super.key});
+  const CardUserInfoWidget({super.key, required this.user});
+  final UserModel user;
 
   @override
   State<CardUserInfoWidget> createState() => _CardUserInfoWidgetState();
@@ -11,6 +13,7 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
+    var user = widget.user;
     return Card(
       elevation: 5,
       child: Container(
@@ -21,24 +24,31 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nome do Usuario'),
-                Text('usuario@email.com'),
-                Text('999.999.999-99'),
-                Text('Rua nova'),
-                Text('Centro'),
+                Text(
+                    '${user.name.split(' ').first} ${user.name.split(' ').last}'),
+                Text(user.email),
+                Text(user.cpf),
+                Text(user.street),
+                Text(user.district),
               ],
             ),
             const Spacer(),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('30 anos'),
-                Text('(99) 9 9999-9999'),
-                Text('10/10/1999'),
-                Text('342'),
+                Text(
+                    '${(DateTime.now().difference(user.dateBirth).inDays / 365).round()} anos'),
+                Text(user.fone),
+                Text(user.dateBirth
+                    .toString()
+                    .split(' ')
+                    .first
+                    .replaceAll('-', '/')),
+                Text(user.num),
+                Text(user.complement ?? '')
               ],
             ),
             const Spacer(),
