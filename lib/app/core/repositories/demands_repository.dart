@@ -7,7 +7,7 @@ abstract class DemandsRepository {
   Future<DemandsModel> createDemands(Map<String, dynamic> json);
   Future<List<DemandsModel>> getAllDemands();
   Future<List<DemandsModel>> getAllDemandsByUser(String userId);
-  Future<DemandsModel> updateDemands(Map<String, dynamic> json);
+  Future<DemandsModel> updateDemands(Map<String, dynamic> json, String id);
   Future<void> deleteDemands(String id);
 }
 
@@ -49,9 +49,14 @@ class DemandsRepositoryImpl implements DemandsRepository {
   }
 
   @override
-  Future<DemandsModel> updateDemands(Map<String, dynamic> json) {
-    // TODO: implement updateDemands
-    throw UnimplementedError();
+  Future<DemandsModel> updateDemands(
+      Map<String, dynamic> json, String id) async {
+    var response =
+        await _supabase.from('demands').update(json).eq('id', id).select();
+
+    DemandsModel demands = demandsModelFromJson(jsonEncode(response[0]));
+
+    return demands;
   }
 
   @override
