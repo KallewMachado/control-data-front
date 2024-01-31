@@ -51,8 +51,7 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_keyForm.currentState!.validate()) {
-                      String solicitationDate =
-                          DateTime.now().toString().split(' ')[0];
+                      String solicitationDate = DateTime.now().toString();
                       Map<String, dynamic> json = {
                         "id": uuid.v4(),
                         "title": _titleController.text.trim(),
