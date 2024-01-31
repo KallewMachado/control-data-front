@@ -1,4 +1,7 @@
+import 'package:control_data/app/core/repositories/demands_repository.dart';
 import 'package:control_data/app/modules/demands/views/demands_page.dart';
+import 'package:control_data/app/modules/demands/views/demands_store.dart';
+import 'package:control_data/app/modules/demands/views/register/register_demands_page.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -7,11 +10,24 @@ class DemandsModule extends Module {
   void binds(i) {
     super.binds(i);
     i.addLazySingleton<UsersStore>(UsersStore.new);
+    i.addLazySingleton<DemandsStore>(DemandsStore.new);
+    i.add<DemandsRepository>(DemandsRepositoryImpl.new);
   }
 
   @override
   void routes(r) {
     super.routes(r);
-    r.child(Modular.initialRoute, child: (context) => const DemandsPage());
+    r.child(
+      Modular.initialRoute,
+      child: (context) => DemandsPage(
+        user: r.args.data,
+      ),
+    );
+    r.child(
+      '/register',
+      child: (context) => RegisterDemandsPage(
+        user: r.args.data,
+      ),
+    );
   }
 }
