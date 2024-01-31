@@ -18,11 +18,6 @@ class CardUserWidget extends StatelessWidget {
       elevation: 5,
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10),
-        shape: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
         onTap: () {
           Modular.to.pushNamed('/home/demands/', arguments: user);
         },
