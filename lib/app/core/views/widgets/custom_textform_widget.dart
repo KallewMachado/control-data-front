@@ -17,6 +17,8 @@ class CustomTextFormWidget extends StatefulWidget {
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
     this.validator,
+    this.maxlines,
+    this.autofocus = false,
   });
 
   final bool obscureText;
@@ -31,6 +33,8 @@ class CustomTextFormWidget extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
+  final int? maxlines;
+  final bool autofocus;
 
   @override
   State<CustomTextFormWidget> createState() => _CustomTextFormWidgetState();
@@ -40,6 +44,8 @@ class _CustomTextFormWidgetState extends State<CustomTextFormWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: widget.autofocus,
+      maxLines: widget.maxlines,
       textInputAction: widget.textInputAction,
       keyboardType: widget.keyboardType,
       obscuringCharacter: '*',
