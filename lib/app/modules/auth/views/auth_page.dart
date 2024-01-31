@@ -51,6 +51,7 @@ class _AuthPageState extends State<AuthPage> {
                 ),
                 const SizedBox(height: 10),
                 CustomTextFormWidget(
+                  maxlines: 1,
                   label: const Text("senha"),
                   controller: _passwordController,
                   obscureText: _store.obscurePassword,

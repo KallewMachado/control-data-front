@@ -110,6 +110,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                   ),
                   SizedBox(height: spacing),
                   CustomTextFormWidget(
+                    maxlines: 1,
                     controller: _passwordController,
                     obscureText: true,
                     label: const Text('Senha'),
@@ -123,6 +124,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                   ),
                   SizedBox(height: spacing),
                   CustomTextFormWidget(
+                    maxlines: 1,
                     controller: _confirmPasswordController,
                     obscureText: true,
                     label: const Text('Confirmar Senha'),
