@@ -8,6 +8,7 @@ class CardDemandsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: demand.isDone == true ? Colors.green : null,
       elevation: 5,
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10),
@@ -17,9 +18,20 @@ class CardDemandsWidget extends StatelessWidget {
           maxLines: 2,
           demand.description ?? '',
         ),
-        trailing: IconButton(
+        trailing: PopupMenuButton(
           icon: const Icon(Icons.more_vert),
-          onPressed: () {},
+          itemBuilder: (BuildContext context) => [
+            PopupMenuItem(
+              child: Text(demand.isDone == false ? 'Finalizar' : 'Desfazer'),
+            ),
+            const PopupMenuItem(
+              child: Text('Editar'),
+            ),
+            PopupMenuItem(
+              enabled: demand.isDone == true ? false : true,
+              child: const Text('Remover'),
+            ),
+          ],
         ),
       ),
     );
