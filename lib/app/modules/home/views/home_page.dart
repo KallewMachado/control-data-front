@@ -46,6 +46,11 @@ class _HomePageState extends State<HomePage> {
       body: const RouterOutlet(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SegmentedButton<Pages>(
+        style: ButtonStyle(
+          side: MaterialStateProperty.all(
+            const BorderSide(color: Colors.transparent),
+          ),
+        ),
         showSelectedIcon: false,
         segments: <ButtonSegment<Pages>>[
           ButtonSegment<Pages>(
