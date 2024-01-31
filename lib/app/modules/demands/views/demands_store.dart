@@ -13,6 +13,8 @@ abstract class DemandsStoreBase with Store {
   final DemandsRepository _repository;
 
   ObservableList<DemandsModel> demandsList = ObservableList<DemandsModel>();
+  ObservableList<DemandsModel> demandsListByUser =
+      ObservableList<DemandsModel>();
 
   DemandsStoreBase(this._repository);
 
@@ -37,8 +39,8 @@ abstract class DemandsStoreBase with Store {
     try {
       var demands = await _repository.getAllDemandsByUser(userId);
 
-      demandsList.clear();
-      demandsList.addAll(demands);
+      demandsListByUser.clear();
+      demandsListByUser.addAll(demands);
     } on PostgrestException catch (e) {
       print(e.message);
     } catch (e) {
