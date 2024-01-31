@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:control_data/app/core/model/demands_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
