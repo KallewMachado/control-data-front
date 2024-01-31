@@ -49,12 +49,12 @@ class _DemandsPageState extends State<DemandsPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(bottom: 80),
-                    itemCount: _store.demandsList.length,
+                    itemCount: _store.demandsListByUser.length,
                     itemBuilder: (ctx, index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: CardDemandsWidget(
-                          demand: _store.demandsList[index],
+                          demand: _store.demandsListByUser[index],
                         ),
                       );
                     },
