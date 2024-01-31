@@ -203,6 +203,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                           String dateBirth = date.toString().split(' ')[0];
 
                           Map<String, dynamic> json = {
+                            "id": uuid.v4(),
                             "name": _nameController.text.trim(),
                             "cpf": _cpfController.text.trim(),
                             "email": _emailController.text.trim(),
