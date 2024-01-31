@@ -23,6 +23,7 @@ class AppWidget extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         routerConfig: Modular.routerConfig,
+        supportedLocales: const [Locale('pt', 'BR')],
       );
     });
   }
