@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/board_demands_widget.dart';
+import 'widgets/chart_demands_widget.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -17,13 +18,11 @@ class _InitialPageState extends State<InitialPage> {
         padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
         child: Column(
           children: [
-            Container(
-              color: Colors.amber,
-              height: 150,
-              child: const Center(child: Text('Grafico de demandas')),
-            ),
+            const ChartDemandsWidget(),
             const SizedBox(height: 20),
-            const BoardDemandsWidget()
+            const Text("Lista de Demandas"),
+            const SizedBox(height: 10),
+            BoardDemandsWidget()
           ],
         ),
       ),
