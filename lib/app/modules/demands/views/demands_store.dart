@@ -21,6 +21,10 @@ abstract class DemandsStoreBase with Store {
     await _repository.createDemands(json);
   }
 
+  Future<void> updateDemands(Map<String, dynamic> json, String id) async {
+    await _repository.updateDemands(json, id);
+  }
+
   Future<void> getAllDemandsByUser(String userId) async {
     try {
       var demands = await _repository.getAllDemandsByUser(userId);
