@@ -1,4 +1,5 @@
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
+import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -254,9 +255,9 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
 
                           Modular.to.pop();
                         } on AuthException catch (e) {
-                          print(e.message);
+                          SnackBarWidget.errorSnackBar(context, e.message);
                         } on PostgrestException catch (e) {
-                          print(e.message);
+                          SnackBarWidget.errorSnackBar(context, e.message);
                         }
                       }
                     },
