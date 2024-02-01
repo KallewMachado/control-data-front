@@ -1,8 +1,10 @@
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
+import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
 import 'package:control_data/app/modules/demands/views/demands_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class RegisterDemandsPage extends StatefulWidget {
@@ -40,6 +42,12 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                   autofocus: true,
                   controller: _titleController,
                   label: const Text('Titulo'),
+                  validator: (title) {
+                    if (title == null || title.isEmpty) {
+                      return "campo vazio";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 CustomTextFormWidget(
@@ -51,19 +59,30 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_keyForm.currentState!.validate()) {
-                      String solicitationDate = DateTime.now().toString();
-                      Map<String, dynamic> json = {
-                        "id": uuid.v4(),
-                        "title": _titleController.text.trim(),
-                        "description": _descriptionController.text.trim(),
-                        "solicitation_date": solicitationDate,
-                        "done_date": null,
-                        "done": false,
-                        "user_id": user.id,
-                      };
+                      try {
+                        String solicitationDate = DateTime.now().toString();
+                        Map<String, dynamic> json = {
+                          "id": uuid.v4(),
+                          "title": _titleController.text.trim(),
+                          "description": _descriptionController.text.trim(),
+                          "solicitation_date": solicitationDate,
+                          "done_date": null,
+                          "done": false,
+                          "user_id": user.id,
+                        };
 
-                      await _store.createDemands(json);
-                      Modular.to.pop();
+                        await _store.createDemands(json);
+                        if (mounted) {
+                          SnackBarWidget.successSnackBar(
+                              context, 'Demanda criada com Sucesso!');
+                        }
+
+                        await _store.getAllDemandsByUser(user.id);
+
+                        Modular.to.pop();
+                      } on PostgrestException catch (e) {
+                        SnackBarWidget.errorSnackBar(context, e.message);
+                      }
                     }
                   },
                   child: const Text('Salvar'),
