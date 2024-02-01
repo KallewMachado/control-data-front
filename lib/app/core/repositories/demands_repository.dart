@@ -5,9 +5,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract class DemandsRepository {
   Future<DemandsModel> createDemands(Map<String, dynamic> json);
   Future<List<DemandsModel>> getAllDemands();
-  Future<List<DemandsModel>> getAllDemandsByUser(String userId);
+  // Future<List<DemandsModel>> getAllDemandsByUser(String userId);
   Future<DemandsModel> updateDemands(Map<String, dynamic> json, String id);
-  Future<void> deleteDemands(String id);
+  Future<DemandsModel> deleteDemands(String id);
 }
 
 class DemandsRepositoryImpl implements DemandsRepository {
@@ -34,18 +34,18 @@ class DemandsRepositoryImpl implements DemandsRepository {
     return demands;
   }
 
-  @override
-  Future<List<DemandsModel>> getAllDemandsByUser(String userId) async {
-    List<DemandsModel> demandsList = [];
-    var response =
-        await _supabase.from('demands').select().eq('user_id', userId);
+  // @override
+  // Future<List<DemandsModel>> getAllDemandsByUser(String userId) async {
+  //   List<DemandsModel> demandsList = [];
+  //   var response =
+  //       await _supabase.from('demands').select().eq('user_id', userId);
 
-    var demands = DemandsModel.fromJsonList(response);
+  //   var demands = DemandsModel.fromJsonList(response);
 
-    demandsList.addAll(demands);
+  //   demandsList.addAll(demands);
 
-    return demands;
-  }
+  //   return demands;
+  // }
 
   @override
   Future<DemandsModel> updateDemands(
@@ -60,7 +60,8 @@ class DemandsRepositoryImpl implements DemandsRepository {
 
   @override
   Future<DemandsModel> deleteDemands(String id) async {
-    var response = await _supabase.from('demands').delete().eq('id', id);
+    var response =
+        await _supabase.from('demands').delete().eq('id', id).select();
 
     DemandsModel demands = demandsModelFromJson(jsonEncode(response[0]));
 
