@@ -1,7 +1,9 @@
 import 'package:control_data/app/core/model/demands_model.dart';
+import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
 import 'package:control_data/app/modules/demands/views/demands_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CardDemandsWidget extends StatefulWidget {
   const CardDemandsWidget({super.key, required this.demand});
@@ -31,18 +33,60 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => [
             PopupMenuItem(
-              onTap: () {
-                Map<String, dynamic> json = {"done": !widget.demand.isDone};
+              onTap: () async {
+                try {
+                  var status =
+                      widget.demand.isDone == false ? 'concluida' : 'desfeita';
 
-                _store.updateDemands(json, widget.demand.id);
+                  var dateDone = widget.demand.isDone == false
+                      ? DateTime.now().toString()
+                      : null;
+
+                  Map<String, dynamic> json = {
+                    "done": !widget.demand.isDone,
+                    "done_date": dateDone
+                  };
+
+                  await _store.updateDemands(json, widget.demand.id);
+                  await _store.getAllDemandsByUser(widget.demand.userId);
+
+                  if (mounted) {
+                    SnackBarWidget.successSnackBar(
+                        context, 'Demanda $status com sucesso!');
+                  }
+                } on PostgrestException catch (e) {
+                  if (mounted) {
+                    SnackBarWidget.errorSnackBar(context, e.message);
+                  }
+                }
               },
               child: Text(
                   widget.demand.isDone == false ? 'Finalizar' : 'Desfazer'),
             ),
-            const PopupMenuItem(
-              child: Text('Editar'),
+            PopupMenuItem(
+              enabled: widget.demand.isDone == true ? false : true,
+              child: const Text('Editar'),
             ),
             PopupMenuItem(
+              onTap: () async {
+                try {
+                  await _store.removeDemand(widget.demand.id);
+                  await _store.getAllDemandsByUser(widget.demand.userId);
+
+                  if (mounted) {
+                    SnackBarWidget.successSnackBar(
+                        context, 'Demanda excluida com sucesso!');
+                  }
+                } on PostgrestException catch (e) {
+                  if (mounted) {
+                    SnackBarWidget.errorSnackBar(context, e.message);
+                  }
+                } catch (e) {
+                  if (mounted) {
+                    SnackBarWidget.errorSnackBar(context, e.toString());
+                  }
+                }
+              },
               enabled: widget.demand.isDone == true ? false : true,
               child: const Text('Remover'),
             ),
