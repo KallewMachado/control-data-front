@@ -15,26 +15,56 @@ abstract class DemandsStoreBase with Store {
   ObservableList<DemandsModel> demandsListByUser =
       ObservableList<DemandsModel>();
 
+  ObservableList<DemandsModel> demandsList = ObservableList<DemandsModel>();
+
   DemandsStoreBase(this._repository);
 
+  @action
   Future<void> createDemands(Map<String, dynamic> json) async {
-    await _repository.createDemands(json);
+    var response = await _repository.createDemands(json);
+    demandsList.add(response);
   }
 
+  @action
   Future<void> updateDemands(Map<String, dynamic> json, String id) async {
-    await _repository.updateDemands(json, id);
+    var response = await _repository.updateDemands(json, id);
+
+    demandsList.removeWhere((demand) => demand.id == response.id);
+    demandsList.add(response);
   }
 
-  Future<void> getAllDemandsByUser(String userId) async {
+  @action
+  Future<void> getAllDemands() async {
     try {
-      var demands = await _repository.getAllDemandsByUser(userId);
+      var demands = await _repository.getAllDemands();
 
-      demandsListByUser.clear();
-      demandsListByUser.addAll(demands);
+      demands.sort((a, b) => a.solicitationDate.compareTo(b.solicitationDate));
+
+      demandsList.clear();
+      demandsList.addAll(demands);
     } on PostgrestException catch (e) {
       print(e.message);
     } catch (e) {
       print(e);
     }
+  }
+
+  @action
+  getAllDemandsByUser(String userId) async {
+    List<DemandsModel> listAux = [];
+    for (var demand in demandsList) {
+      if (demand.userId == userId) {
+        listAux.add(demand);
+      }
+    }
+    demandsListByUser.clear();
+    demandsListByUser.addAll(listAux);
+  }
+
+  @action
+  Future<void> removeDemand(String id) async {
+    var response = await _repository.deleteDemands(id);
+
+    demandsList.removeWhere((demand) => demand.id == response.id);
   }
 }
