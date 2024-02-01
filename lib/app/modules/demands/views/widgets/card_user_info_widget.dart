@@ -1,5 +1,6 @@
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CardUserInfoWidget extends StatefulWidget {
   const CardUserInfoWidget({super.key, required this.user});
@@ -14,6 +15,7 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
     var user = widget.user;
+    var date = DateFormat('dd/MM/yyyy');
     return Card(
       elevation: 5,
       child: Container(
@@ -42,11 +44,7 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
                 Text(
                     '${(DateTime.now().difference(user.dateBirth).inDays / 365).round()} anos'),
                 Text(user.fone),
-                Text(user.dateBirth
-                    .toString()
-                    .split(' ')
-                    .first
-                    .replaceAll('-', '/')),
+                Text(date.format(user.dateBirth)),
                 Text(user.num),
                 Text(user.complement ?? '')
               ],
