@@ -1,11 +1,10 @@
 import 'package:control_data/app/modules/demands/views/demands_store.dart';
 import 'package:control_data/app/modules/demands/views/widgets/card_user_info_widget.dart';
+import 'package:control_data/app/modules/demands/views/widgets/list_demands_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../core/model/user_model.dart';
-import 'widgets/card_demands_widget.dart';
 
 class DemandsPage extends StatefulWidget {
   const DemandsPage({super.key, required this.user});
@@ -37,32 +36,14 @@ class _DemandsPageState extends State<DemandsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-        child: Observer(
-          builder: (context) {
-            return Column(
-              children: [
-                CardUserInfoWidget(user: widget.user),
-                const SizedBox(height: 10),
-                Divider(height: 10, color: theme.primary),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(bottom: 80),
-                    itemCount: _store.demandsListByUser.length,
-                    itemBuilder: (ctx, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: CardDemandsWidget(
-                          demand: _store.demandsListByUser[index],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
+        child: Column(
+          children: [
+            CardUserInfoWidget(user: widget.user),
+            const SizedBox(height: 10),
+            Divider(height: 10, color: theme.primary),
+            const SizedBox(height: 10),
+            ListDemandsWidget(store: _store)
+          ],
         ),
       ),
     );
