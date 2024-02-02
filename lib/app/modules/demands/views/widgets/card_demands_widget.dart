@@ -64,6 +64,10 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
                   widget.demand.isDone == false ? 'Finalizar' : 'Desfazer'),
             ),
             PopupMenuItem(
+              onTap: () {
+                Modular.to
+                    .pushNamed('/changeDemands', arguments: widget.demand);
+              },
               enabled: widget.demand.isDone == true ? false : true,
               child: const Text('Editar'),
             ),
