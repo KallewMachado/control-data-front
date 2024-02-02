@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'core/repositories/demands_repository.dart';
 import 'core/repositories/user_repository.dart';
 import 'core/store/app_store.dart';
+import 'modules/demands/views/change/change_demands_page.dart';
 import 'modules/demands/views/demands_store.dart';
 
 class AppModule extends Module {
@@ -22,5 +23,11 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module(Modular.initialRoute, module: AuthModule());
+    r.child(
+      '/changeDemands',
+      child: (context) => ChangeDemandsPage(
+        demand: r.args.data,
+      ),
+    );
   }
 }
