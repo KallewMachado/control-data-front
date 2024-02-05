@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   final HomeStore store = Modular.get<HomeStore>();
   final UsersStore usersStore = Modular.get<UsersStore>();
   final AppStore _appStore = Modular.get<AppStore>();
+  final AuthStore _authStore = Modular.get<AuthStore>();
   Set<Pages> selection = <Pages>{Pages.initial};
 
   late StreamSubscription<InternetConnectionStatus> listener;
@@ -64,7 +66,8 @@ class _HomePageState extends State<HomePage> {
             context,
             actions: [
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await _authStore.logout();
                     Modular.to.navigate('/');
                   },
                   child: const Center(child: Text('Fechar')))
