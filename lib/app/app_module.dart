@@ -8,6 +8,7 @@ import 'core/repositories/user_repository.dart';
 import 'core/store/app_store.dart';
 import 'modules/demands/views/change/change_demands_page.dart';
 import 'modules/demands/views/demands_store.dart';
+import 'modules/users/views/change/change_user_page.dart';
 
 class AppModule extends Module {
   @override
@@ -27,6 +28,12 @@ class AppModule extends Module {
       '/changeDemands',
       child: (context) => ChangeDemandsPage(
         demand: r.args.data,
+      ),
+    );
+    r.child(
+      '/changeUser',
+      child: (context) => ChangeUserPage(
+        user: r.args.data,
       ),
     );
   }
