@@ -55,15 +55,40 @@ abstract class UsersStoreBase with Store {
   }
 
   @action
+  Future<UserModel> newUser(Map<String, dynamic> json) async {
+    try {
+      return await _repository.newUser(json);
+    } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @action
   Future<void> getAllUsers() async {
     try {
       var users = await _repository.getAllUsers();
       usersList.clear();
       usersList.addAll(users);
-    } on PostgrestException catch (e) {
-      print(e.message);
+    } on PostgrestException catch (_) {
+      rethrow;
     } catch (e) {
-      print(e);
+      rethrow;
+    }
+  }
+
+  @action
+  Future<void> updateUser(Map<String, dynamic> json, String id) async {
+    try {
+      var response = await _repository.updateUser(json, id);
+
+      usersList.removeWhere((user) => user.id == response.id);
+      usersList.add(response);
+    } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -73,10 +98,10 @@ abstract class UsersStoreBase with Store {
       var user = await _repository.deleteUser(id);
 
       usersList.removeWhere((value) => value.id == user.id);
-    } on PostgrestException catch (e) {
-      print(e.message);
+    } on PostgrestException catch (_) {
+      rethrow;
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 }

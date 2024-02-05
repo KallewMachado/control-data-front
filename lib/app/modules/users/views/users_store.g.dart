@@ -32,6 +32,14 @@ mixin _$UsersStore on UsersStoreBase, Store {
     return _$getAllUsersAsyncAction.run(() => super.getAllUsers());
   }
 
+  late final _$updateUserAsyncAction =
+      AsyncAction('UsersStoreBase.updateUser', context: context);
+
+  @override
+  Future<void> updateUser(Map<String, dynamic> json, String id) {
+    return _$updateUserAsyncAction.run(() => super.updateUser(json, id));
+  }
+
   late final _$deleteUserAsyncAction =
       AsyncAction('UsersStoreBase.deleteUser', context: context);
 
