@@ -42,10 +42,10 @@ abstract class DemandsStoreBase with Store {
 
       demandsList.clear();
       demandsList.addAll(demands);
-    } on PostgrestException catch (e) {
-      print(e.message);
+    } on PostgrestException catch (_) {
+      rethrow;
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 
