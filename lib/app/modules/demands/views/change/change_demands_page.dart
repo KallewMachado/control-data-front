@@ -95,9 +95,12 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
                   },
                   child: const Text('Salvar'),
                 ),
-                OutlinedButton(
+                TextButton(
                   onPressed: () => Modular.to.pop(),
-                  child: const Text('Cancelar'),
+                  child: const Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
               ],
             ),
