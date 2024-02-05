@@ -43,15 +43,19 @@ abstract class _AuthStoreBase with Store {
       return user;
     } on AuthException catch (_) {
       rethrow;
+    } on PostgrestException catch (_) {
+      rethrow;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<UserModel> newUser(Map<String, dynamic> json) async {
+  @action
+  Future<void> logout() async {
     try {
-      return await _userRepository.newUser(json);
-    } on PostgrestException catch (_) {
+      await _userRepository.logout();
+      await hive.userBox.clear();
+    } on AuthException catch (_) {
       rethrow;
     } catch (e) {
       rethrow;
