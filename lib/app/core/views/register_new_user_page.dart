@@ -1,7 +1,10 @@
+import 'package:control_data/app/core/store/app_store.dart';
+import 'package:control_data/app/core/views/widgets/custom_dialog_widget.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -17,7 +20,11 @@ class RegisterNewUserPage extends StatefulWidget {
 
 class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
   final _authStore = Modular.get<AuthStore>();
+  final _appStore = Modular.get<AppStore>();
+  final _userStore = Modular.get<UsersStore>();
+
   final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _cpfController = TextEditingController();
   final _emailController = TextEditingController();
@@ -251,13 +258,21 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                             "complement": _complementController.text.trim(),
                           };
 
-                          await _authStore.newUser(json);
+                          await _userStore.newUser(json);
 
                           Modular.to.pop();
                         } on AuthException catch (e) {
                           SnackBarWidget.errorSnackBar(context, e.message);
                         } on PostgrestException catch (e) {
                           SnackBarWidget.errorSnackBar(context, e.message);
+                        } catch (e) {
+                          if (_appStore.hasInternet == false) {
+                            CustomDialogWidet.show(
+                              context,
+                              content: (context) => const Text(
+                                  'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                            );
+                          }
                         }
                       }
                     },
