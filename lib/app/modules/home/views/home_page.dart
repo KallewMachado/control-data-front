@@ -1,6 +1,12 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import '../../../core/store/app_store.dart';
+import '../../../core/views/widgets/custom_dialog_widget.dart';
 import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,16 +27,61 @@ enum Pages {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final HomeStore store;
-  late final UsersStore usersStore;
+  final HomeStore store = Modular.get<HomeStore>();
+  final UsersStore usersStore = Modular.get<UsersStore>();
+  final AppStore _appStore = Modular.get<AppStore>();
   Set<Pages> selection = <Pages>{Pages.initial};
+
+  late StreamSubscription<InternetConnectionStatus> listener;
+
+  final customInstance = InternetConnectionChecker.createInstance(
+    checkInterval: const Duration(seconds: 3),
+  );
 
   @override
   void initState() {
     super.initState();
-    store = Modular.get<HomeStore>();
-    usersStore = Modular.get<UsersStore>();
+
     Modular.to.navigate('/home/initial/');
+
+    listener = customInstance.onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          developer.log(
+            'run [InternetConnectionChecker()] ==> $status',
+            name: 'auth_page.dart',
+          );
+          _appStore.toggleHasInternetStatus(true);
+
+          break;
+        case InternetConnectionStatus.disconnected:
+          developer.log(
+            'run [InternetConnectionChecker()] ==> $status',
+            name: 'auth_page.dart',
+          );
+          _appStore.toggleHasInternetStatus(false);
+          CustomDialogWidet.show(
+            context,
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Modular.to.navigate('/');
+                  },
+                  child: const Center(child: Text('Fechar')))
+            ],
+            content: (context) => const Text(
+                'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+          );
+
+          break;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    listener.cancel();
+    super.dispose();
   }
 
   @override
