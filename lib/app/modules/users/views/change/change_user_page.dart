@@ -44,7 +44,8 @@ class _ChangePageState extends State<ChangeUserPage> {
     _foneController.text = widget.user.fone;
     _districtController.text = widget.user.district;
     _complementController.text = widget.user.complement ?? '';
-    _dateBirthController.text = widget.user.dateBirth.toString();
+    _dateBirthController.text =
+        widget.user.dateBirth.toString().split(' ').first;
   }
 
   @override
