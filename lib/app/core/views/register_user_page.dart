@@ -1,6 +1,5 @@
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
-import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class RegisterUserPage extends StatefulWidget {
 }
 
 class _RegisterUserPageState extends State<RegisterUserPage> {
-  final _authStore = Modular.get<AuthStore>();
   final _userStore = Modular.get<UsersStore>();
   final _formKey = GlobalKey<FormState>();
 
@@ -217,7 +215,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                             "user_created": _userStore.user.id,
                           };
 
-                          await _authStore.newUser(json);
+                          await _userStore.newUser(json);
                           await _userStore.getAllUsers();
                           if (mounted) {
                             SnackBarWidget.successSnackBar(
