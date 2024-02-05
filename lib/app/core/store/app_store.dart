@@ -10,4 +10,12 @@ class AppStore = AppStoreBase with _$AppStore;
 abstract class AppStoreBase with Store {
   @observable
   ThemeMode? themeMode = ThemeMode.dark;
+
+  @observable
+  bool hasInternet = false;
+
+  @action
+  toggleHasInternetStatus(bool value) {
+    hasInternet = value;
+  }
 }
