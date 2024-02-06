@@ -35,7 +35,7 @@ class _DemandsPageState extends State<DemandsPage> {
         child: const Icon(Icons.add),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Column(
           children: [
             CardUserInfoWidget(user: widget.user),
