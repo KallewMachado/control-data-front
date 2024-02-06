@@ -107,105 +107,109 @@ class _AuthPageState extends State<AuthPage> {
     var theme = Theme.of(context);
     var textColor = theme.colorScheme.primary;
     var text2Color = theme.colorScheme.secondary;
-    return Material(
-      child: Container(
-        padding: const EdgeInsets.all(30),
-        child: Form(
-          key: formKey,
-          child: Observer(builder: (context) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Login",
-                  style:
-                      theme.textTheme.headlineLarge?.copyWith(color: textColor),
-                ),
-                const SizedBox(height: 60),
-                CustomTextFormWidget(
-                  label: const Text("E-mail"),
-                  controller: _emailController,
-                  validator: (password) {
-                    if (password == null || password.isEmpty) {
-                      return "campo vazio";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                CustomTextFormWidget(
-                  maxlines: 1,
-                  label: const Text("senha"),
-                  controller: _passwordController,
-                  obscureText: _store.obscurePassword,
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _store.changeObscurePassword();
-                    },
-                    icon: _store.obscurePassword
-                        ? const Icon(Icons.remove_red_eye)
-                        : const Icon(Icons.remove),
-                  ),
-                  validator: (password) {
-                    if (password == null || password.isEmpty) {
-                      return "campo vazio";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 30),
-                OutlinedButton(
-                  style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all<Color?>(
-                        textColor.withOpacity(0.3)),
-                  ),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      try {
-                        AuthModel auth = AuthModel(
-                          id: '',
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
-                        );
-                        await _store.login(auth);
-                        Modular.to.navigate('/home/');
-                      } on AuthException catch (e) {
-                        SnackBarWidget.errorSnackBar(context, e.message);
-                        if (_appStore.hasInternet == false) {
-                          CustomDialogWidet.show(
-                            context,
-                            content: (context) => const Text(
-                                'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                          );
-                        }
-                      } catch (e) {
-                        if (_appStore.hasInternet == false) {
-                          CustomDialogWidet.show(
-                            context,
-                            content: (context) => const Text(
-                                'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                          );
-                        }
-                      }
-                    }
-                  },
-                  child: const Text("Entrar"),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Modular.to.pushNamed('/register');
-                  },
-                  child: Text(
-                    "Register",
-                    style: TextStyle(
-                      color: text2Color,
-                      decoration: TextDecoration.underline,
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(30),
+          child: SingleChildScrollView(
+            child: Observer(builder: (context) {
+              return Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                    Text(
+                      "Login",
+                      style: theme.textTheme.headlineLarge
+                          ?.copyWith(color: textColor),
                     ),
-                  ),
+                    const SizedBox(height: 60),
+                    CustomTextFormWidget(
+                      label: const Text("E-mail"),
+                      controller: _emailController,
+                      validator: (password) {
+                        if (password == null || password.isEmpty) {
+                          return "campo vazio";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextFormWidget(
+                      maxlines: 1,
+                      label: const Text("senha"),
+                      controller: _passwordController,
+                      obscureText: _store.obscurePassword,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          _store.changeObscurePassword();
+                        },
+                        icon: _store.obscurePassword
+                            ? const Icon(Icons.remove_red_eye)
+                            : const Icon(Icons.remove),
+                      ),
+                      validator: (password) {
+                        if (password == null || password.isEmpty) {
+                          return "campo vazio";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    OutlinedButton(
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all<Color?>(
+                            textColor.withOpacity(0.3)),
+                      ),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          try {
+                            AuthModel auth = AuthModel(
+                              id: '',
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                            await _store.login(auth);
+                            Modular.to.navigate('/home/');
+                          } on AuthException catch (e) {
+                            SnackBarWidget.errorSnackBar(context, e.message);
+                            if (_appStore.hasInternet == false) {
+                              CustomDialogWidet.show(
+                                context,
+                                content: (context) => const Text(
+                                    'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                              );
+                            }
+                          } catch (e) {
+                            if (_appStore.hasInternet == false) {
+                              CustomDialogWidet.show(
+                                context,
+                                content: (context) => const Text(
+                                    'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                              );
+                            }
+                          }
+                        }
+                      },
+                      child: const Text("Entrar"),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Modular.to.pushNamed('/register');
+                      },
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                          color: text2Color,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );
