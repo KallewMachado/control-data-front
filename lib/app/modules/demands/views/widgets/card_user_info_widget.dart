@@ -52,10 +52,11 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
             ),
             const Spacer(),
             IconButton(
-                onPressed: () {
-                  Modular.to.pushNamed('/changeUser', arguments: user);
-                },
-                icon: const Icon(Icons.edit))
+              onPressed: () {
+                Modular.to.pushNamed('/changeUser', arguments: user);
+              },
+              icon: const Icon(Icons.edit),
+            ),
           ],
         ),
       ),
