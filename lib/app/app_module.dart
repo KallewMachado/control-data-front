@@ -1,5 +1,6 @@
 import 'package:control_data/app/modules/auth/auth_module.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
+import 'package:control_data/app/modules/users/views/change/change_password_page.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -35,6 +36,10 @@ class AppModule extends Module {
       child: (context) => ChangeUserPage(
         user: r.args.data,
       ),
+    );
+    r.child(
+      '/changePassword',
+      child: (context) => const ChangePasswordPage(),
     );
   }
 }
