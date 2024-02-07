@@ -104,4 +104,14 @@ abstract class UsersStoreBase with Store {
       rethrow;
     }
   }
+
+  Future<void> updatePassword(String newPassword) async {
+    try {
+      await _repository.updatePassword(newPassword).whenComplete(() {});
+    } on AuthException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
