@@ -11,6 +11,7 @@ abstract class UserRepository {
   Future<UserModel> updateUser(Map<String, dynamic> json, String id);
   Future<UserModel> deleteUser(String id);
   Future<void> logout();
+  Future<void> updatePassword(String newPassword);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -126,6 +127,17 @@ class UserRepositoryImpl implements UserRepository {
 
       return user;
     } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updatePassword(String newPassword) async {
+    try {
+      await _supabase.auth.updateUser(UserAttributes(password: newPassword));
+    } on AuthException catch (_) {
       rethrow;
     } catch (e) {
       rethrow;
