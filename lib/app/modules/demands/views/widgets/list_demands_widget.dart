@@ -26,6 +26,7 @@ class _ListDemandsWidgetState extends State<ListDemandsWidget> {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: CardDemandsWidget(
                   demand: widget.store.demandsListByUser[index],
+                  store: widget.store,
                 ),
               );
             },
