@@ -164,6 +164,23 @@ class _AuthPageState extends State<AuthPage> {
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           try {
+                            if (mounted) {
+                              CustomDialogWidet.show(
+                                context,
+                                barrierDismissible: false,
+                                actions: [],
+                                content: (context) => const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Fazendo login...'),
+                                    SizedBox(height: 10),
+                                    CircularProgressIndicator(),
+                                  ],
+                                ),
+                              );
+                            }
+
                             AuthModel auth = AuthModel(
                               id: '',
                               email: _emailController.text.trim(),
@@ -172,6 +189,7 @@ class _AuthPageState extends State<AuthPage> {
                             await _store.login(auth);
                             Modular.to.navigate('/home/');
                           } on AuthException catch (e) {
+                            Modular.to.pop();
                             SnackBarWidget.errorSnackBar(context, e.message);
                             if (_appStore.hasInternet == false) {
                               CustomDialogWidet.show(
@@ -181,6 +199,7 @@ class _AuthPageState extends State<AuthPage> {
                               );
                             }
                           } catch (e) {
+                            Modular.to.pop();
                             if (_appStore.hasInternet == false) {
                               CustomDialogWidet.show(
                                 context,

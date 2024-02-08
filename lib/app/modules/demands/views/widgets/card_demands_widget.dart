@@ -22,7 +22,7 @@ class CardDemandsWidget extends StatefulWidget {
 class _CardDemandsWidgetState extends State<CardDemandsWidget> {
   final appStore = Modular.get<AppStore>();
 
-  _deleteDemand() {
+  void _deleteDemand() {
     developer.log(
       'run [Delete Demand] ==> ',
       name: 'card_demands_widget.dart',
@@ -44,8 +44,25 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
             ElevatedButton(
               onPressed: () async {
                 try {
+                  if (mounted) {
+                    CustomDialogWidet.show(
+                      context,
+                      barrierDismissible: false,
+                      actions: [],
+                      content: (context) => const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Excluindo...'),
+                          SizedBox(height: 10),
+                          CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
+                  }
                   await widget.store.removeDemand(widget.demand.id);
                   await widget.store.getAllDemandsByUser(widget.demand.userId);
+                  Modular.to.pop();
 
                   if (mounted) {
                     SnackBarWidget.successSnackBar(
@@ -76,6 +93,49 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
     );
   }
 
+  Future<void> _finalize() async {
+    try {
+      if (mounted) {
+        CustomDialogWidet.show(
+          context,
+          barrierDismissible: false,
+          actions: [],
+          content: (context) => const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('carregando...'),
+              SizedBox(height: 10),
+              CircularProgressIndicator(),
+            ],
+          ),
+        );
+      }
+      var status = widget.demand.isDone == false ? 'concluida' : 'desfeita';
+
+      var dateDone =
+          widget.demand.isDone == false ? DateTime.now().toString() : null;
+
+      Map<String, dynamic> json = {
+        "done": !widget.demand.isDone,
+        "done_date": dateDone
+      };
+
+      await widget.store.updateDemands(json, widget.demand.id);
+      await widget.store.getAllDemandsByUser(widget.demand.userId);
+      Modular.to.pop();
+
+      if (mounted) {
+        SnackBarWidget.successSnackBar(context, 'Demanda $status com sucesso!');
+      }
+    } on PostgrestException catch (e) {
+      Modular.to.pop();
+      if (mounted) {
+        SnackBarWidget.errorSnackBar(context, e.message);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -93,33 +153,7 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => [
             PopupMenuItem(
-              onTap: () async {
-                try {
-                  var status =
-                      widget.demand.isDone == false ? 'concluida' : 'desfeita';
-
-                  var dateDone = widget.demand.isDone == false
-                      ? DateTime.now().toString()
-                      : null;
-
-                  Map<String, dynamic> json = {
-                    "done": !widget.demand.isDone,
-                    "done_date": dateDone
-                  };
-
-                  await widget.store.updateDemands(json, widget.demand.id);
-                  await widget.store.getAllDemandsByUser(widget.demand.userId);
-
-                  if (mounted) {
-                    SnackBarWidget.successSnackBar(
-                        context, 'Demanda $status com sucesso!');
-                  }
-                } on PostgrestException catch (e) {
-                  if (mounted) {
-                    SnackBarWidget.errorSnackBar(context, e.message);
-                  }
-                }
-              },
+              onTap: _finalize,
               child: Text(
                   widget.demand.isDone == false ? 'Finalizar' : 'Desfazer'),
             ),

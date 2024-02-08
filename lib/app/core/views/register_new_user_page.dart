@@ -254,6 +254,22 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             try {
+                              if (mounted) {
+                                CustomDialogWidet.show(
+                                  context,
+                                  barrierDismissible: false,
+                                  actions: [],
+                                  content: (context) => const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('Salvando...'),
+                                      SizedBox(height: 10),
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
+                                );
+                              }
                               AuthModel auth = AuthModel(
                                 id: '',
                                 email: _emailController.text.trim(),
@@ -282,14 +298,19 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                                 "complement": _complementController.text.trim(),
                               };
 
-                              await _userStore.newUser(json);
+                              await _userStore
+                                  .newUser(json)
+                                  .whenComplete(() => Modular.to.pop());
 
                               Modular.to.pop();
                             } on AuthException catch (e) {
+                              Modular.to.pop();
                               SnackBarWidget.errorSnackBar(context, e.message);
                             } on PostgrestException catch (e) {
+                              Modular.to.pop();
                               SnackBarWidget.errorSnackBar(context, e.message);
                             } catch (e) {
+                              Modular.to.pop();
                               if (_appStore.hasInternet == false) {
                                 CustomDialogWidet.show(
                                   context,

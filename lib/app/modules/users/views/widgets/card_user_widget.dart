@@ -23,7 +23,7 @@ class _CardUserWidgetState extends State<CardUserWidget> {
   _deleteUser() {
     developer.log(
       'run [Delete User] ==> ',
-      name: 'auth_page.dart',
+      name: 'card_user_widget.dart',
     );
     CustomDialogWidet.show(
       context,
@@ -40,12 +40,29 @@ class _CardUserWidgetState extends State<CardUserWidget> {
         ElevatedButton(
           onPressed: () async {
             try {
+              Modular.to.pop();
+              CustomDialogWidet.show(
+                context,
+                barrierDismissible: false,
+                actions: [],
+                content: (context) => const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Excluindo...'),
+                    SizedBox(height: 10),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              );
+
               await widget.store.deleteUser(widget.user.id);
+              Modular.to.pop();
+
               if (mounted) {
                 SnackBarWidget.successSnackBar(
                     context, 'Usuário excluido com sucesso!');
               }
-              Modular.to.pop();
             } on PostgrestException catch (e) {
               Modular.to.pop();
               SnackBarWidget.errorSnackBar(context, e.message);
