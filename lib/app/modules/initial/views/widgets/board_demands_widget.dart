@@ -24,6 +24,7 @@ class BoardDemandsWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: CardDemandsWidget(
                   demand: _store.demandsList[index],
+                  store: _store,
                 ),
               );
             },
