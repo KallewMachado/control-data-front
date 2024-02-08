@@ -7,9 +7,11 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../model/auth_model.dart';
+import '../store/register_new_user_store.dart';
 
 class RegisterNewUserPage extends StatefulWidget {
   const RegisterNewUserPage({super.key});
@@ -22,6 +24,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
   final _authStore = Modular.get<AuthStore>();
   final _appStore = Modular.get<AppStore>();
   final _userStore = Modular.get<UsersStore>();
+  final _store = Modular.get<RegisterNewUserStore>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,6 +54,8 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
     _districtController.dispose();
     _complementController.dispose();
     _dateBirthController.dispose();
+    _store.obscurePassword = true;
+    _store.obscureConfirmPassword = true;
 
     super.dispose();
   }
@@ -65,228 +70,249 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
           child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Text(
-                    'Novo Usuario',
-                    style: theme.textTheme.headlineMedium
-                        ?.copyWith(color: theme.colorScheme.primary),
-                  ),
-                  const SizedBox(height: 50),
-                  CustomTextFormWidget(
-                    controller: _nameController,
-                    label: const Text('Nome'),
-                    validator: (name) {
-                      if (name == null || name.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _cpfController,
-                    label: const Text('CPF'),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CpfInputFormatter()
-                    ],
-                    validator: (cpf) {
-                      if (cpf == null || cpf.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    label: const Text('E-mail'),
-                    validator: (email) {
-                      if (email == null || email.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    maxlines: 1,
-                    controller: _passwordController,
-                    obscureText: true,
-                    label: const Text('Senha'),
-                    validator: (password) {
-                      if (password == null || password.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    maxlines: 1,
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    label: const Text('Confirmar Senha'),
-                    validator: (confirmPass) {
-                      if (confirmPass == null || confirmPass.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _foneController,
-                    label: const Text('Celular'),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter()
-                    ],
-                    validator: (fone) {
-                      if (fone == null || fone.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    isDate: true,
-                    controller: _dateBirthController,
-                    readOnly: true,
-                    label: const Text('Data de nascimento'),
-                    validator: (dateBirth) {
-                      if (dateBirth == null || dateBirth.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  Row(
+            child: Observer(
+              builder: (context) {
+                return Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.55,
-                        child: CustomTextFormWidget(
-                          controller: _endressController,
-                          label: const Text('Endereço'),
-                          validator: (endress) {
-                            if (endress == null || endress.isEmpty) {
-                              return isRequiredField;
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
+                      Text(
+                        'Novo Usuario',
+                        style: theme.textTheme.headlineMedium
+                            ?.copyWith(color: theme.colorScheme.primary),
                       ),
-                      const Spacer(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        child: CustomTextFormWidget(
-                          controller: _numController,
-                          label: const Text('Numero'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return isRequiredField;
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
+                      const SizedBox(height: 50),
+                      CustomTextFormWidget(
+                        controller: _nameController,
+                        label: const Text('Nome'),
+                        validator: (name) {
+                          if (name == null || name.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        controller: _cpfController,
+                        label: const Text('CPF'),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CpfInputFormatter()
+                        ],
+                        validator: (cpf) {
+                          if (cpf == null || cpf.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        label: const Text('E-mail'),
+                        validator: (email) {
+                          if (email == null || email.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        maxlines: 1,
+                        controller: _passwordController,
+                        obscureText: _store.obscurePassword,
+                        label: const Text('Senha'),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _store.changeObscurePassword();
+                          },
+                          icon: _store.obscurePassword
+                              ? const Icon(Icons.remove_red_eye)
+                              : const Icon(Icons.remove),
+                        ),
+                        validator: (password) {
+                          if (password == null || password.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        maxlines: 1,
+                        controller: _confirmPasswordController,
+                        obscureText: _store.obscureConfirmPassword,
+                        label: const Text('Confirmar Senha'),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _store.changeObscureConfirmPassword();
+                          },
+                          icon: _store.obscureConfirmPassword
+                              ? const Icon(Icons.remove_red_eye)
+                              : const Icon(Icons.remove),
+                        ),
+                        validator: (confirmPass) {
+                          if (confirmPass == null || confirmPass.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        controller: _foneController,
+                        label: const Text('Celular'),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TelefoneInputFormatter()
+                        ],
+                        validator: (fone) {
+                          if (fone == null || fone.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        isDate: true,
+                        controller: _dateBirthController,
+                        readOnly: true,
+                        label: const Text('Data de nascimento'),
+                        validator: (dateBirth) {
+                          if (dateBirth == null || dateBirth.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.55,
+                            child: CustomTextFormWidget(
+                              controller: _endressController,
+                              label: const Text('Endereço'),
+                              validator: (endress) {
+                                if (endress == null || endress.isEmpty) {
+                                  return isRequiredField;
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: CustomTextFormWidget(
+                              controller: _numController,
+                              label: const Text('Numero'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return isRequiredField;
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        controller: _districtController,
+                        label: const Text('Bairro'),
+                        validator: (district) {
+                          if (district == null || district.isEmpty) {
+                            return isRequiredField;
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: spacing),
+                      CustomTextFormWidget(
+                        controller: _complementController,
+                        label: const Text('Complemento'),
+                      ),
+                      const SizedBox(height: 40),
+                      OutlinedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              AuthModel auth = AuthModel(
+                                id: '',
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+
+                              DateTime date = DateTime.parse(
+                                  _dateBirthController.text
+                                      .replaceAll('/', '-')
+                                      .trim());
+                              String dateBirth = date.toString().split(' ')[0];
+
+                              AuthModel result =
+                                  await _authStore.createUser(auth);
+
+                              Map<String, dynamic> json = {
+                                "id": result.id,
+                                "name": _nameController.text.trim(),
+                                "cpf": _cpfController.text.trim(),
+                                "email": result.email,
+                                "date_birth": dateBirth,
+                                "fone": _foneController.text.trim(),
+                                "street": _endressController.text.trim(),
+                                "num": _numController.text.trim(),
+                                "district": _districtController.text.trim(),
+                                "complement": _complementController.text.trim(),
+                              };
+
+                              await _userStore.newUser(json);
+
+                              Modular.to.pop();
+                            } on AuthException catch (e) {
+                              SnackBarWidget.errorSnackBar(context, e.message);
+                            } on PostgrestException catch (e) {
+                              SnackBarWidget.errorSnackBar(context, e.message);
+                            } catch (e) {
+                              if (_appStore.hasInternet == false) {
+                                CustomDialogWidet.show(
+                                  context,
+                                  content: (context) => const Text(
+                                      'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                                );
+                              }
+                            }
+                          }
+                        },
+                        child: const Text('Registrar'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Modular.to.pop();
+                        },
+                        child: const Text('Cancelar'),
+                      ),
+                      const SizedBox(height: 40),
                     ],
                   ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _districtController,
-                    label: const Text('Bairro'),
-                    validator: (district) {
-                      if (district == null || district.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: spacing),
-                  CustomTextFormWidget(
-                    controller: _complementController,
-                    label: const Text('Complemento'),
-                  ),
-                  const SizedBox(height: 40),
-                  OutlinedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          AuthModel auth = AuthModel(
-                            id: '',
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
-                          );
-
-                          DateTime date = DateTime.parse(_dateBirthController
-                              .text
-                              .replaceAll('/', '-')
-                              .trim());
-                          String dateBirth = date.toString().split(' ')[0];
-
-                          AuthModel result = await _authStore.createUser(auth);
-
-                          Map<String, dynamic> json = {
-                            "id": result.id,
-                            "name": _nameController.text.trim(),
-                            "cpf": _cpfController.text.trim(),
-                            "email": result.email,
-                            "date_birth": dateBirth,
-                            "fone": _foneController.text.trim(),
-                            "street": _endressController.text.trim(),
-                            "num": _numController.text.trim(),
-                            "district": _districtController.text.trim(),
-                            "complement": _complementController.text.trim(),
-                          };
-
-                          await _userStore.newUser(json);
-
-                          Modular.to.pop();
-                        } on AuthException catch (e) {
-                          SnackBarWidget.errorSnackBar(context, e.message);
-                        } on PostgrestException catch (e) {
-                          SnackBarWidget.errorSnackBar(context, e.message);
-                        } catch (e) {
-                          if (_appStore.hasInternet == false) {
-                            CustomDialogWidet.show(
-                              context,
-                              content: (context) => const Text(
-                                  'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                            );
-                          }
-                        }
-                      }
-                    },
-                    child: const Text('Registrar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Modular.to.pop();
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  const SizedBox(height: 40),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),
