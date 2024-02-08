@@ -63,8 +63,9 @@ class ConfigurationsPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               TextButton.icon(
-                onPressed: () {
-                  _authStore.logout();
+                onPressed: () async {
+                  await _authStore.logout();
+                  Modular.to.navigate('/');
                 },
                 icon: const Icon(
                   Icons.logout,
