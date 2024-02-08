@@ -1,3 +1,4 @@
+import 'package:control_data/app/core/store/register_new_user_store.dart';
 import 'package:control_data/app/modules/auth/auth_module.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:control_data/app/modules/users/views/change/change_password_page.dart';
@@ -18,6 +19,7 @@ class AppModule extends Module {
     i.addLazySingleton<UsersStore>(UsersStore.new);
     i.addLazySingleton<AuthStore>(AuthStore.new);
     i.addLazySingleton<DemandsStore>(DemandsStore.new);
+    i.addLazySingleton<RegisterNewUserStore>(RegisterNewUserStore.new);
     i.add<UserRepository>(UserRepositoryImpl.new);
     i.add<DemandsRepository>(DemandsRepositoryImpl.new);
   }
