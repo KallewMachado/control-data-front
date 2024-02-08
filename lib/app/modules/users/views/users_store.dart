@@ -36,6 +36,7 @@ abstract class UsersStoreBase with Store {
   }
 
   initUser() {
+    if (hive.userBox.values.isEmpty) return;
     var userbox = hive.userBox.values.first;
 
     user = UserModel(

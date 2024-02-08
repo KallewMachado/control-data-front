@@ -24,6 +24,14 @@ mixin _$UsersStore on UsersStoreBase, Store {
     });
   }
 
+  late final _$newUserAsyncAction =
+      AsyncAction('UsersStoreBase.newUser', context: context);
+
+  @override
+  Future<UserModel> newUser(Map<String, dynamic> json) {
+    return _$newUserAsyncAction.run(() => super.newUser(json));
+  }
+
   late final _$getAllUsersAsyncAction =
       AsyncAction('UsersStoreBase.getAllUsers', context: context);
 
