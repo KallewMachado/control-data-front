@@ -25,6 +25,14 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  late final _$logoutAsyncAction =
+      AsyncAction('_AuthStoreBase.logout', context: context);
+
+  @override
+  Future<void> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
+  }
+
   late final _$_AuthStoreBaseActionController =
       ActionController(name: '_AuthStoreBase', context: context);
 
