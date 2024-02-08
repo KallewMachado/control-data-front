@@ -9,6 +9,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/views/widgets/custom_dialog_widget.dart';
+
 class ChangeUserPage extends StatefulWidget {
   const ChangeUserPage({super.key, required this.user});
   final UserModel user;
@@ -193,6 +195,22 @@ class _ChangePageState extends State<ChangeUserPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
+                          if (mounted) {
+                            CustomDialogWidet.show(
+                              context,
+                              barrierDismissible: false,
+                              actions: [],
+                              content: (context) => const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Salvando...'),
+                                  SizedBox(height: 10),
+                                  CircularProgressIndicator(),
+                                ],
+                              ),
+                            );
+                          }
                           DateTime date = DateTime.parse(_dateBirthController
                               .text
                               .replaceAll('/', '-')
@@ -211,7 +229,9 @@ class _ChangePageState extends State<ChangeUserPage> {
                           };
 
                           await _userStore.updateUser(json, widget.user.id);
-                          await _userStore.getAllUsers();
+                          await _userStore
+                              .getAllUsers()
+                              .whenComplete(() => Modular.to.pop());
                           if (mounted) {
                             SnackBarWidget.successSnackBar(
                                 context, 'Usuario registrado com sucesso!');
@@ -219,10 +239,12 @@ class _ChangePageState extends State<ChangeUserPage> {
 
                           Modular.to.pop();
                         } on AuthException catch (e) {
+                          Modular.to.pop();
                           if (mounted) {
                             SnackBarWidget.errorSnackBar(context, e.message);
                           }
                         } on PostgrestException catch (e) {
+                          Modular.to.pop();
                           if (mounted) {
                             SnackBarWidget.errorSnackBar(context, e.message);
                           }

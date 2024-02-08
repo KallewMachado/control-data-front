@@ -7,6 +7,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/views/widgets/custom_dialog_widget.dart';
+
 class RegisterDemandsPage extends StatefulWidget {
   const RegisterDemandsPage({super.key, required this.user});
   final UserModel user;
@@ -60,6 +62,23 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                   onPressed: () async {
                     if (_keyForm.currentState!.validate()) {
                       try {
+                        if (mounted) {
+                          CustomDialogWidet.show(
+                            context,
+                            barrierDismissible: false,
+                            actions: [],
+                            content: (context) => const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('Salvando...'),
+                                SizedBox(height: 10),
+                                CircularProgressIndicator(),
+                              ],
+                            ),
+                          );
+                        }
+
                         String solicitationDate = DateTime.now().toString();
                         Map<String, dynamic> json = {
                           "id": uuid.v4(),
@@ -77,7 +96,9 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                               context, 'Demanda criada com Sucesso!');
                         }
 
-                        await _store.getAllDemandsByUser(user.id);
+                        await _store
+                            .getAllDemandsByUser(user.id)
+                            .whenComplete(() => Modular.to.pop());
 
                         Modular.to.pop();
                       } on PostgrestException catch (e) {

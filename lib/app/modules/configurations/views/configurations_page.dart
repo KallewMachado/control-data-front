@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../core/views/widgets/custom_dialog_widget.dart';
 import '../../auth/views/auth_store.dart';
 
 class ConfigurationsPage extends StatelessWidget {
@@ -64,6 +65,21 @@ class ConfigurationsPage extends StatelessWidget {
               const SizedBox(height: 30),
               TextButton.icon(
                 onPressed: () async {
+                  CustomDialogWidet.show(
+                    context,
+                    barrierDismissible: false,
+                    actions: [],
+                    content: (context) => const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Saindo...'),
+                        SizedBox(height: 10),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  );
+
                   await _authStore.logout();
                   Modular.to.navigate('/');
                 },

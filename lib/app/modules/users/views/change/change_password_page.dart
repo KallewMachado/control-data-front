@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/views/widgets/custom_dialog_widget.dart';
 import '../../../../core/views/widgets/custom_textform_widget.dart';
 import '../../../../core/views/widgets/snackbar_widget.dart';
 import '../users_store.dart';
@@ -90,7 +91,25 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
-                          await _userStore.updatePassword(_password.text);
+                          if (mounted) {
+                            CustomDialogWidet.show(
+                              context,
+                              barrierDismissible: false,
+                              actions: [],
+                              content: (context) => const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Salvando...'),
+                                  SizedBox(height: 10),
+                                  CircularProgressIndicator(),
+                                ],
+                              ),
+                            );
+                          }
+                          await _userStore
+                              .updatePassword(_password.text)
+                              .whenComplete(() => Modular.to.pop());
                           if (mounted) {
                             SnackBarWidget.successSnackBar(
                                 context, 'Senha alterada com sucesso!');
@@ -98,6 +117,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
                           Modular.to.pop();
                         } on AuthException catch (e) {
+                          Modular.to.pop();
                           if (mounted) {
                             SnackBarWidget.errorSnackBar(context, e.message);
                           }

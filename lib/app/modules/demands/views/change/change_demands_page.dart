@@ -7,6 +7,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/views/widgets/custom_dialog_widget.dart';
+
 class ChangeDemandsPage extends StatefulWidget {
   const ChangeDemandsPage({super.key, required this.demand});
   final DemandsModel demand;
@@ -74,6 +76,22 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
                   onPressed: () async {
                     if (_keyForm.currentState!.validate()) {
                       try {
+                        if (mounted) {
+                          CustomDialogWidet.show(
+                            context,
+                            barrierDismissible: false,
+                            actions: [],
+                            content: (context) => const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('Salvando...'),
+                                SizedBox(height: 10),
+                                CircularProgressIndicator(),
+                              ],
+                            ),
+                          );
+                        }
                         Map<String, dynamic> json = {
                           "title": _titleController.text.trim(),
                           "description": _descriptionController.text.trim(),
@@ -85,10 +103,13 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
                               context, 'Demanda Alterada com Sucesso!');
                         }
 
-                        await _store.getAllDemandsByUser(demand.userId);
+                        await _store
+                            .getAllDemandsByUser(demand.userId)
+                            .whenComplete(() => Modular.to.pop());
 
                         Modular.to.pop();
                       } on PostgrestException catch (e) {
+                        Modular.to.pop();
                         SnackBarWidget.errorSnackBar(context, e.message);
                       }
                     }
