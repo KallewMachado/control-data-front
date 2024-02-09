@@ -13,6 +13,7 @@ class AppWidget extends StatelessWidget {
     final appStore = Modular.get<AppStore>();
     return Observer(builder: (context) {
       return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
