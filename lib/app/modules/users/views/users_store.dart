@@ -14,6 +14,12 @@ abstract class UsersStoreBase with Store {
   final hive = HiveConfig();
 
   @observable
+  bool obscurePassword = true;
+
+  @observable
+  bool obscureConfirmPassword = true;
+
+  @observable
   UserModel user = UserModel(
     id: '',
     name: 'name',
@@ -33,6 +39,16 @@ abstract class UsersStoreBase with Store {
 
   UsersStoreBase(this._repository) {
     initUser();
+  }
+
+  @action
+  changeObscurePassword() {
+    obscurePassword = !obscurePassword;
+  }
+
+  @action
+  changeObscureConfirmPassword() {
+    obscureConfirmPassword = !obscureConfirmPassword;
   }
 
   initUser() {
