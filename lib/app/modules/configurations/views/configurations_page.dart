@@ -65,23 +65,47 @@ class ConfigurationsPage extends StatelessWidget {
               const SizedBox(height: 30),
               TextButton.icon(
                 onPressed: () async {
-                  CustomDialogWidet.show(
-                    context,
-                    barrierDismissible: false,
-                    actions: [],
-                    content: (context) => const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Saindo...'),
-                        SizedBox(height: 10),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-                  );
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      CustomDialogWidet.show(
+                        context,
+                        title: (context) => const Text(
+                            ' Tem certeza que deseja excluir usuario?'),
+                        content: (context) => const SizedBox(height: 0),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Modular.to.pop();
+                            },
+                            child: const Text('Não'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              Modular.to.pop();
+                              CustomDialogWidet.show(
+                                context,
+                                barrierDismissible: false,
+                                actions: [],
+                                content: (context) => const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Saindo...'),
+                                    SizedBox(height: 10),
+                                    CircularProgressIndicator(),
+                                  ],
+                                ),
+                              );
 
-                  await _authStore.logout();
-                  Modular.to.navigate('/');
+                              await _authStore.logout();
+                              Modular.to.navigate('/');
+                            },
+                            child: const Text('Sim'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 icon: const Icon(
                   Icons.logout,
