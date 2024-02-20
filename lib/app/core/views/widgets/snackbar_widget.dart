@@ -13,6 +13,7 @@ class SnackBarWidget {
         content: Text(
           msgSuccess,
           textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
     );
@@ -29,6 +30,7 @@ class SnackBarWidget {
         content: Text(
           msgError,
           textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
     );
@@ -46,6 +48,7 @@ class SnackBarWidget {
         content: Text(
           msgError,
           textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
     );
