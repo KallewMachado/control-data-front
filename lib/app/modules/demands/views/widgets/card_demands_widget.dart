@@ -71,17 +71,23 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
                   Modular.to.pop();
                 } on PostgrestException catch (e) {
                   Modular.to.pop();
-                  SnackBarWidget.errorSnackBar(context, e.message);
+                  if (mounted) {
+                    SnackBarWidget.errorSnackBar(context, e.message);
+                  }
                 } catch (e) {
                   Modular.to.pop();
                   if (appStore.hasInternet == false) {
-                    CustomDialogWidet.show(
-                      context,
-                      content: (context) => const Text(
-                          'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                    );
+                    if (mounted) {
+                      CustomDialogWidet.show(
+                        context,
+                        content: (context) => const Text(
+                            'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                      );
+                    }
                   } else {
-                    SnackBarWidget.errorSnackBar(context, e.toString());
+                    if (mounted) {
+                      SnackBarWidget.errorSnackBar(context, e.toString());
+                    }
                   }
                 }
               },

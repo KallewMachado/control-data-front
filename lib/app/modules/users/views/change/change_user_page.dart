@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:control_data/app/core/store/app_store.dart';
 import 'package:control_data/app/core/views/widgets/custom_dialog_widget.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
@@ -305,18 +307,26 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                               Modular.to.pop();
                             } on AuthException catch (e) {
                               Modular.to.pop();
-                              SnackBarWidget.errorSnackBar(context, e.message);
+                              if (mounted) {
+                                SnackBarWidget.errorSnackBar(
+                                    context, e.message);
+                              }
                             } on PostgrestException catch (e) {
                               Modular.to.pop();
-                              SnackBarWidget.errorSnackBar(context, e.message);
+                              if (mounted) {
+                                SnackBarWidget.errorSnackBar(
+                                    context, e.message);
+                              }
                             } catch (e) {
                               Modular.to.pop();
                               if (_appStore.hasInternet == false) {
-                                CustomDialogWidet.show(
-                                  context,
-                                  content: (context) => const Text(
-                                      'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                                );
+                                if (mounted) {
+                                  CustomDialogWidet.show(
+                                    context,
+                                    content: (context) => const Text(
+                                        'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                                  );
+                                }
                               }
                             }
                           }

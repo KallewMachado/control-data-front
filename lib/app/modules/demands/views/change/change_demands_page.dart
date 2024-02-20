@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:control_data/app/core/model/demands_model.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
@@ -110,7 +112,9 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
                         Modular.to.pop();
                       } on PostgrestException catch (e) {
                         Modular.to.pop();
-                        SnackBarWidget.errorSnackBar(context, e.message);
+                        if (mounted) {
+                          SnackBarWidget.errorSnackBar(context, e.message);
+                        }
                       }
                     }
                   },
