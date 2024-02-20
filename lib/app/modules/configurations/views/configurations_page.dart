@@ -26,29 +26,19 @@ class ConfigurationsPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               RadioListTile<ThemeMode>(
-                title: const Text('Sistema'),
-                value: ThemeMode.system,
-                groupValue: _appStore.themeMode,
-                onChanged: (mode) {
-                  if (mode != null) {
-                    _appStore.themeMode = mode;
-                  }
-                },
-              ),
-              RadioListTile<ThemeMode>(
                 title: const Text('Escuro'),
                 value: ThemeMode.dark,
                 groupValue: _appStore.themeMode,
-                onChanged: (mode) {
-                  _appStore.themeMode = mode;
+                onChanged: (mode) async {
+                  await _appStore.handleThemeModel(mode);
                 },
               ),
               RadioListTile<ThemeMode>(
                 title: const Text('Claro'),
                 value: ThemeMode.light,
                 groupValue: _appStore.themeMode,
-                onChanged: (mode) {
-                  _appStore.themeMode = mode;
+                onChanged: (mode) async {
+                  await _appStore.handleThemeModel(mode);
                 },
               ),
               Text(
