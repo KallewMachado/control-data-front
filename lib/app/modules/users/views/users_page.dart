@@ -24,17 +24,21 @@ class UsersPage extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _store.usersList.length,
-                itemBuilder: (ctx, index) {
-                  var user = _store.usersList[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: CardUserWidget(user: user, store: _store),
-                  );
-                },
-              ),
+              child: _store.usersList.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _store.usersList.length,
+                      itemBuilder: (ctx, index) {
+                        var user = _store.usersList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: CardUserWidget(user: user, store: _store),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: Text('Nenhum usuário registrada!'),
+                    ),
             )
           ],
         );
