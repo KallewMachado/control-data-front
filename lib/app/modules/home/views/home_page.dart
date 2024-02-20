@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   final HomeStore store = Modular.get<HomeStore>();
   final UsersStore usersStore = Modular.get<UsersStore>();
   final AppStore _appStore = Modular.get<AppStore>();
-  final AuthStore _authStore = Modular.get<AuthStore>();
+  final AuthStore authStore = Modular.get<AuthStore>();
   Set<Pages> selection = <Pages>{Pages.initial};
 
   late StreamSubscription<InternetConnectionStatus> listener;
@@ -67,7 +67,6 @@ class _HomePageState extends State<HomePage> {
             actions: [
               ElevatedButton(
                   onPressed: () async {
-                    await _authStore.logout();
                     Modular.to.navigate('/');
                   },
                   child: const Center(child: Text('Fechar')))
