@@ -41,8 +41,28 @@ mixin _$AppStore on AppStoreBase, Store {
     });
   }
 
+  late final _$handleThemeModelAsyncAction =
+      AsyncAction('AppStoreBase.handleThemeModel', context: context);
+
+  @override
+  Future<void> handleThemeModel(ThemeMode? theme) {
+    return _$handleThemeModelAsyncAction
+        .run(() => super.handleThemeModel(theme));
+  }
+
   late final _$AppStoreBaseActionController =
       ActionController(name: 'AppStoreBase', context: context);
+
+  @override
+  dynamic initTheme() {
+    final _$actionInfo = _$AppStoreBaseActionController.startAction(
+        name: 'AppStoreBase.initTheme');
+    try {
+      return super.initTheme();
+    } finally {
+      _$AppStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic toggleHasInternetStatus(bool value) {
