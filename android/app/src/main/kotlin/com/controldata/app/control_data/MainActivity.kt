@@ -1,4 +1,4 @@
-package com.controldata.app.control_data
+package com.edivaldo.app.eccontrole
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,6 @@
 {
-    "name": "control_data",
-    "short_name": "control_data",
+    "name": "EC Controle",
+    "short_name": "EC Controle",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
