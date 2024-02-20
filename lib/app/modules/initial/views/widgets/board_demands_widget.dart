@@ -16,19 +16,23 @@ class BoardDemandsWidget extends StatelessWidget {
     return Observer(
       builder: (context) {
         return Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80),
-            itemCount: _store.demandsList.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: CardDemandsWidget(
-                  demand: _store.demandsList[index],
-                  store: _store,
+          child: _store.demandsList.isNotEmpty
+              ? ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemCount: _store.demandsList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: CardDemandsWidget(
+                        demand: _store.demandsList[index],
+                        store: _store,
+                      ),
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text('Nenhuma demanda registrada!'),
                 ),
-              );
-            },
-          ),
         );
       },
     );
