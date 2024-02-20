@@ -18,19 +18,23 @@ class _ListDemandsWidgetState extends State<ListDemandsWidget> {
     return Observer(
       builder: (context) {
         return Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80),
-            itemCount: widget.store.demandsListByUser.length,
-            itemBuilder: (ctx, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: CardDemandsWidget(
-                  demand: widget.store.demandsListByUser[index],
-                  store: widget.store,
+          child: widget.store.demandsListByUser.isNotEmpty
+              ? ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemCount: widget.store.demandsListByUser.length,
+                  itemBuilder: (ctx, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: CardDemandsWidget(
+                        demand: widget.store.demandsListByUser[index],
+                        store: widget.store,
+                      ),
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text('Usuário não possui demandas registrada!'),
                 ),
-              );
-            },
-          ),
         );
       },
     );
