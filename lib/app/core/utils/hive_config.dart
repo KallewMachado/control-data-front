@@ -4,6 +4,7 @@ import '../model/user_model.dart';
 
 class HiveConfig {
   final Box<UserModel> userBox = Hive.box('userBox');
+  final Box themeBox = Hive.box('darkMode');
 
   static Future<void> hiveStart() async {
     await Hive.initFlutter();
@@ -19,6 +20,7 @@ class HiveConfig {
 
   static Future<void> _openBoxes() async {
     await Hive.openBox<UserModel>('userBox');
+    await Hive.openBox('darkMode');
   }
 
   static _registerAdapters() {
