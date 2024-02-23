@@ -2,6 +2,7 @@
 
 import 'package:control_data/app/core/model/demands_model.dart';
 import 'package:control_data/app/core/repositories/demands_repository.dart';
+import 'package:control_data/app/core/utils/hive_config.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,6 +12,7 @@ class DemandsStore = DemandsStoreBase with _$DemandsStore;
 
 abstract class DemandsStoreBase with Store {
   final DemandsRepository _repository;
+  final hive = HiveConfig();
 
   ObservableList<DemandsModel> demandsListByUser =
       ObservableList<DemandsModel>();
