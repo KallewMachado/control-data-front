@@ -30,13 +30,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       createdAt: fields[11] as DateTime?,
       demands: (fields[12] as List?)?.cast<dynamic>(),
       cpf: fields[2] as String,
+      adm: fields[13] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(11)
       ..write(obj.createdAt)
       ..writeByte(12)
-      ..write(obj.demands);
+      ..write(obj.demands)
+      ..writeByte(13)
+      ..write(obj.adm);
   }
 
   @override

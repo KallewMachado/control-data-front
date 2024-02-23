@@ -41,6 +41,8 @@ class UserModel extends HiveObject {
   DateTime? createdAt;
   @HiveField(12)
   List? demands;
+  @HiveField(13)
+  bool? adm;
 
   UserModel({
     required this.id,
@@ -56,6 +58,7 @@ class UserModel extends HiveObject {
     this.createdAt,
     required this.demands,
     required this.cpf,
+    required this.adm,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -72,6 +75,7 @@ class UserModel extends HiveObject {
         createdAt: DateTime.parse(json["created_at"]),
         demands: json["demands"],
         cpf: json["cpf"],
+        adm: json["adm"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +92,7 @@ class UserModel extends HiveObject {
         "created_at": createdAt,
         "demands": demands,
         "cpf": cpf,
+        "adm": adm,
       };
 
   static List<UserModel> fromJsonList(List? list) {
