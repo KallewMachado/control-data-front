@@ -80,6 +80,7 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                             ),
                           );
                         }
+                        var userCreated = _store.hive.userBox.values.first.id;
 
                         String solicitationDate = DateTime.now().toString();
                         Map<String, dynamic> json = {
@@ -90,6 +91,7 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                           "done_date": null,
                           "done": false,
                           "user_id": user.id,
+                          "user_created": userCreated,
                         };
 
                         await _store.createDemands(json);
