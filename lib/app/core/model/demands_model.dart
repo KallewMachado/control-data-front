@@ -14,16 +14,19 @@ class DemandsModel {
   bool isDone;
   String userId;
   DateTime? createdAt;
+  String userCreated;
 
-  DemandsModel(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.solicitationDate,
-      required this.doneDate,
-      required this.isDone,
-      required this.userId,
-      this.createdAt});
+  DemandsModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.solicitationDate,
+    required this.doneDate,
+    required this.isDone,
+    required this.userId,
+    required this.userCreated,
+    this.createdAt,
+  });
 
   factory DemandsModel.fromJson(Map<String, dynamic> json) => DemandsModel(
         id: json["id"],
@@ -35,6 +38,7 @@ class DemandsModel {
             : null,
         isDone: json['done'],
         userId: json['user_id'],
+        userCreated: json['user_created'],
         createdAt: DateTime.parse(json["created_at"]),
       );
 
@@ -46,7 +50,8 @@ class DemandsModel {
         "done_date": doneDate,
         "done": isDone,
         "user_id": userId,
-        "createdAt": createdAt
+        "user_created": userCreated,
+        "created_at": createdAt
       };
 
   static List<DemandsModel> fromJsonList(List? list) {
