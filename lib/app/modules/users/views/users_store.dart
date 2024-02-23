@@ -33,6 +33,7 @@ abstract class UsersStoreBase with Store {
     userCreated: 'userCreated',
     demands: [],
     cpf: 'cpf',
+    adm: false,
   );
 
   ObservableList<UserModel> usersList = ObservableList<UserModel>();
@@ -68,6 +69,7 @@ abstract class UsersStoreBase with Store {
       userCreated: userbox.userCreated,
       demands: userbox.demands ?? [],
       cpf: userbox.cpf,
+      adm: userbox.adm,
     );
   }
 
