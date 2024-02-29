@@ -51,6 +51,12 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                         ?.copyWith(color: theme.colorScheme.primary),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  Text(
+                    'Insira a baixo o codigo que foi enviado para o seu email',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: theme.colorScheme.secondary),
+                  ),
+                  const SizedBox(height: 10),
                   CustomTextFormWidget(
                     maxlines: 1,
                     controller: _tokenCrontroller,
