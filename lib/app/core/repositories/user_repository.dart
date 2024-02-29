@@ -12,6 +12,8 @@ abstract class UserRepository {
   Future<UserModel> deleteUser(String id);
   Future<void> logout();
   Future<void> updatePassword(String newPassword);
+  Future<void> verifyOTP(String token, String email);
+  Future<void> sendForgotPasswordFromEmail(String email);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -137,6 +139,32 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> updatePassword(String newPassword) async {
     try {
       await _supabase.auth.updateUser(UserAttributes(password: newPassword));
+    } on AuthException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> sendForgotPasswordFromEmail(String email) async {
+    try {
+      await _supabase.auth.resetPasswordForEmail(email);
+    } on AuthException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> verifyOTP(String token, String email) async {
+    try {
+      await _supabase.auth.verifyOTP(
+        token: token,
+        type: OtpType.recovery,
+        email: email,
+      );
     } on AuthException catch (_) {
       rethrow;
     } catch (e) {
