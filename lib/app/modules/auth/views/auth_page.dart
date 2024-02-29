@@ -157,6 +157,18 @@ class _AuthPageState extends State<AuthPage> {
                         return null;
                       },
                     ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Modular.to.pushNamed('/sendForgot');
+                        },
+                        child: Text(
+                          'Esqueci senha',
+                          style: TextStyle(color: text2Color),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 30),
                     OutlinedButton(
                       style: ButtonStyle(
