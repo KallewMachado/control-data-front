@@ -1,4 +1,6 @@
 import 'package:control_data/app/core/store/register_new_user_store.dart';
+import 'package:control_data/app/core/views/forgot_password_page.dart';
+import 'package:control_data/app/core/views/verify_otp_page.dart';
 import 'package:control_data/app/modules/auth/auth_module.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:control_data/app/modules/users/views/change/change_password_page.dart';
@@ -41,7 +43,25 @@ class AppModule extends Module {
     );
     r.child(
       '/changePassword',
-      child: (context) => const ChangePasswordPage(),
+      child: (context) => const ChangePasswordPage(
+        title: 'Alterar Senha',
+      ),
+    );
+    r.child(
+      '/resetPassword',
+      child: (context) => const ChangePasswordPage(
+        title: 'Nova Senha',
+      ),
+    );
+    r.child(
+      '/sendForgot',
+      child: (context) => const ForgotPasswordPage(),
+    );
+    r.child(
+      '/verifyOTP',
+      child: (context) => VerifyOtpPage(
+        email: r.args.queryParams['email']!,
+      ),
     );
   }
 }
