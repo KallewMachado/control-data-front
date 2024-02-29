@@ -11,7 +11,8 @@ import '../../../../core/views/widgets/snackbar_widget.dart';
 import '../users_store.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+  const ChangePasswordPage({super.key, required this.title});
+  final String title;
 
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
@@ -57,7 +58,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Alterar Senha',
+                      widget.title,
                       style: theme.textTheme.headlineMedium
                           ?.copyWith(color: theme.colorScheme.primary),
                     ),
@@ -142,8 +143,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               SnackBarWidget.successSnackBar(
                                   context, 'Senha alterada com sucesso!');
                             }
-
-                            Modular.to.pop();
+                            if (Modular.to.path == '/resetPassword') {
+                              Modular.to.navigate('/');
+                            } else {
+                              Modular.to.pop();
+                            }
                           } on AuthException catch (e) {
                             Modular.to.pop();
                             if (mounted) {
