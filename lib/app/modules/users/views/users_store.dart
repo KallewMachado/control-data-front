@@ -133,4 +133,24 @@ abstract class UsersStoreBase with Store {
       rethrow;
     }
   }
+
+  Future<void> sendForgotPasswordFromEmail(String email) async {
+    try {
+      await _repository.sendForgotPasswordFromEmail(email);
+    } on AuthException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> verifyOTP(String token, String email) async {
+    try {
+      await _repository.verifyOTP(token, email);
+    } on AuthException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
