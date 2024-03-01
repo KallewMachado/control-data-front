@@ -44,31 +44,14 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  if (mounted) {
-                    CustomDialogWidet.show(
-                      context,
-                      barrierDismissible: false,
-                      actions: [],
-                      content: (context) => const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Excluindo...'),
-                          SizedBox(height: 10),
-                          CircularProgressIndicator(),
-                        ],
-                      ),
-                    );
-                  }
+                  Modular.to.pop();
                   await widget.store.removeDemand(widget.demand.id);
                   await widget.store.getAllDemandsByUser(widget.demand.userId);
-                  Modular.to.pop();
 
                   if (mounted) {
                     SnackBarWidget.successSnackBar(
                         context, 'Demanda excluida com sucesso!');
                   }
-                  Modular.to.pop();
                 } on PostgrestException catch (e) {
                   Modular.to.pop();
                   if (mounted) {
@@ -101,22 +84,6 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
 
   Future<void> _finalize() async {
     try {
-      if (mounted) {
-        CustomDialogWidet.show(
-          context,
-          barrierDismissible: false,
-          actions: [],
-          content: (context) => const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('carregando...'),
-              SizedBox(height: 10),
-              CircularProgressIndicator(),
-            ],
-          ),
-        );
-      }
       var status = widget.demand.isDone == false ? 'concluida' : 'desfeita';
 
       var dateDone =
@@ -129,7 +96,6 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
 
       await widget.store.updateDemands(json, widget.demand.id);
       await widget.store.getAllDemandsByUser(widget.demand.userId);
-      Modular.to.pop();
 
       if (mounted) {
         SnackBarWidget.successSnackBar(context, 'Demanda $status com sucesso!');
