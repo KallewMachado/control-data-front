@@ -77,7 +77,7 @@ class DemandsRepositoryImpl implements DemandsRepository {
           await _supabase.from('demands').update(json).eq('id', id).select();
 
       DemandsModel demands = demandsModelFromJson(jsonEncode(response[0]));
-      _appStore.initFetch();
+      _appStore.endFetch();
       return demands;
     } on PostgrestException catch (_) {
       rethrow;
