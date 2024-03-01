@@ -298,6 +298,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                                 "num": _numController.text.trim(),
                                 "district": _districtController.text.trim(),
                                 "complement": _complementController.text.trim(),
+                                "adm": true,
                               };
 
                               await _userStore

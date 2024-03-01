@@ -89,13 +89,6 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                       FilteringTextInputFormatter.digitsOnly,
                       CpfInputFormatter()
                     ],
-                    validator: (cpf) {
-                      if (cpf == null || cpf.isEmpty) {
-                        return isRequiredField;
-                      } else {
-                        return null;
-                      }
-                    },
                   ),
                   SizedBox(height: spacing),
                   CustomTextFormWidget(
@@ -214,6 +207,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                             "num": _numController.text.trim(),
                             "district": _districtController.text.trim(),
                             "complement": _complementController.text.trim(),
+                            "adm": false,
                             "user_created": _userStore.user.id,
                           };
 

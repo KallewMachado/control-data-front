@@ -20,7 +20,7 @@ class UserModel extends HiveObject {
   @HiveField(1)
   String name;
   @HiveField(2)
-  String cpf;
+  String? cpf;
   @HiveField(3)
   String email;
   @HiveField(4)
