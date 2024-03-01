@@ -53,12 +53,10 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
                         context, 'Demanda excluida com sucesso!');
                   }
                 } on PostgrestException catch (e) {
-                  Modular.to.pop();
                   if (mounted) {
                     SnackBarWidget.errorSnackBar(context, e.message);
                   }
                 } catch (e) {
-                  Modular.to.pop();
                   if (appStore.hasInternet == false) {
                     if (mounted) {
                       CustomDialogWidet.show(
@@ -101,7 +99,6 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
         SnackBarWidget.successSnackBar(context, 'Demanda $status com sucesso!');
       }
     } on PostgrestException catch (e) {
-      Modular.to.pop();
       if (mounted) {
         SnackBarWidget.errorSnackBar(context, e.message);
       }
