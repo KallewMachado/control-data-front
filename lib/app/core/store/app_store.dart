@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:control_data/app/core/utils/hive_config.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -13,10 +15,23 @@ abstract class AppStoreBase with Store {
   ThemeMode? themeMode = ThemeMode.dark;
 
   @observable
+  bool loading = true;
+
+  @observable
   bool hasInternet = false;
 
   AppStoreBase() {
     initTheme();
+  }
+
+  @action
+  initFetch() {
+    loading = true;
+  }
+
+  @action
+  endFetch() {
+    loading = false;
   }
 
   @action

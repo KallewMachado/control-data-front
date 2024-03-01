@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:control_data/app/core/model/auth_model.dart';
+import 'package:control_data/app/core/store/app_store.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:control_data/app/core/model/user_model.dart';
 
@@ -18,10 +20,12 @@ abstract class UserRepository {
 
 class UserRepositoryImpl implements UserRepository {
   final _supabase = Supabase.instance.client;
+  final _appStore = Modular.get<AppStore>();
 
   @override
   Future<AuthModel> createUser(AuthModel auth) async {
     try {
+      _appStore.initFetch();
       final AuthResponse res = await _supabase.auth
           .signUp(email: auth.email, password: auth.password);
 
@@ -29,7 +33,7 @@ class UserRepositoryImpl implements UserRepository {
 
       AuthModel user =
           AuthModel(id: result!.id, email: result.email!, password: '');
-
+      _appStore.endFetch();
       return user;
     } on AuthException catch (_) {
       rethrow;
@@ -39,11 +43,13 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<List<UserModel>> getAllUsers() async {
     try {
+      _appStore.initFetch();
       List<UserModel> users = [];
       final data = await _supabase.from('users').select();
       var response = UserModel.fromJsonList(data);
 
       users.addAll(response);
+      _appStore.endFetch();
 
       return users;
     } on PostgrestException catch (_) {
@@ -91,10 +97,11 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel> newUser(Map<String, dynamic> json) async {
     try {
+      _appStore.initFetch();
       var response = await _supabase.from('users').insert(json).select();
 
       UserModel user = userModelFromJson(jsonEncode(response[0]));
-
+      _appStore.endFetch();
       return user;
     } on PostgrestException catch (_) {
       rethrow;
@@ -106,10 +113,12 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel> updateUser(Map<String, dynamic> json, String id) async {
     try {
+      _appStore.initFetch();
       var response =
           await _supabase.from('users').update(json).eq('id', id).select();
 
       UserModel user = userModelFromJson(jsonEncode(response[0]));
+      _appStore.endFetch();
 
       return user;
     } on PostgrestException catch (_) {
@@ -122,11 +131,12 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel> deleteUser(String id) async {
     try {
+      _appStore.initFetch();
       var response =
           await _supabase.from('users').delete().eq('id', id).select();
 
       UserModel user = userModelFromJson(jsonEncode(response[0]));
-
+      _appStore.endFetch();
       return user;
     } on PostgrestException catch (_) {
       rethrow;

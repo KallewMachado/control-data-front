@@ -29,7 +29,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       userCreated: fields[10] as String?,
       createdAt: fields[11] as DateTime?,
       demands: (fields[12] as List?)?.cast<dynamic>(),
-      cpf: fields[2] as String,
+      cpf: fields[2] as String?,
       adm: fields[13] as bool?,
     );
   }

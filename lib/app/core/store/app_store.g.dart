@@ -25,6 +25,22 @@ mixin _$AppStore on AppStoreBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: 'AppStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$hasInternetAtom =
       Atom(name: 'AppStoreBase.hasInternet', context: context);
 
@@ -54,6 +70,28 @@ mixin _$AppStore on AppStoreBase, Store {
       ActionController(name: 'AppStoreBase', context: context);
 
   @override
+  dynamic initFetch() {
+    final _$actionInfo = _$AppStoreBaseActionController.startAction(
+        name: 'AppStoreBase.initFetch');
+    try {
+      return super.initFetch();
+    } finally {
+      _$AppStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic endFetch() {
+    final _$actionInfo = _$AppStoreBaseActionController.startAction(
+        name: 'AppStoreBase.endFetch');
+    try {
+      return super.endFetch();
+    } finally {
+      _$AppStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic initTheme() {
     final _$actionInfo = _$AppStoreBaseActionController.startAction(
         name: 'AppStoreBase.initTheme');
@@ -79,6 +117,7 @@ mixin _$AppStore on AppStoreBase, Store {
   String toString() {
     return '''
 themeMode: ${themeMode},
+loading: ${loading},
 hasInternet: ${hasInternet}
     ''';
   }

@@ -1,14 +1,18 @@
+import 'package:control_data/app/core/store/app_store.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:control_data/app/modules/users/views/widgets/card_user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UsersPage extends StatelessWidget {
   UsersPage({super.key}) {
     _store.getAllUsers();
   }
   final _store = Modular.get<UsersStore>();
+  final _appStore = Modular.get<AppStore>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,16 +29,19 @@ class UsersPage extends StatelessWidget {
             const SizedBox(height: 30),
             Expanded(
               child: _store.usersList.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _store.usersList.length,
-                      itemBuilder: (ctx, index) {
-                        var user = _store.usersList[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: CardUserWidget(user: user, store: _store),
-                        );
-                      },
+                  ? Skeletonizer(
+                      enabled: _appStore.loading,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _store.usersList.length,
+                        itemBuilder: (ctx, index) {
+                          var user = _store.usersList[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: CardUserWidget(user: user, store: _store),
+                          );
+                        },
+                      ),
                     )
                   : const Center(
                       child: Text('Nenhum usuário registrada!'),
