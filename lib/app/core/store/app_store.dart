@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:control_data/app/core/utils/hive_config.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
