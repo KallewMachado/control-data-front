@@ -85,6 +85,17 @@ abstract class UsersStoreBase with Store {
   }
 
   @action
+  Future<void> failNewUser(String id) async {
+    try {
+      await _repository.failNewUser(id);
+    } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @action
   Future<void> getAllUsers() async {
     try {
       var users = await _repository.getAllUsers();
