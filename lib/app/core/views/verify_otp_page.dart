@@ -98,8 +98,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                               .whenComplete(() => Modular.to.pop());
                           Modular.to.pushNamed('/resetPassword');
                         } on AuthException catch (e) {
-                          Modular.to.pop();
-                          if (mounted) {
+                          if (context.mounted) {
+                            Modular.to.pop();
                             SnackBarWidget.errorSnackBar(context, e.message);
                           }
                         }
