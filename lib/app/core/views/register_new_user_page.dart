@@ -255,6 +255,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                       OutlinedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            late final userAdminID;
                             try {
                               if (mounted) {
                                 CustomDialogWidet.show(
@@ -287,6 +288,8 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                               AuthModel result =
                                   await _authStore.createUser(auth);
 
+                              userAdminID = result.id;
+
                               Map<String, dynamic> json = {
                                 "id": result.id,
                                 "name": _nameController.text.trim(),
@@ -313,8 +316,9 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                                     context, e.message);
                               }
                             } on PostgrestException catch (e) {
-                              Modular.to.pop();
                               if (mounted) {
+                                await _userStore.failNewUser(userAdminID);
+                                Modular.to.pop();
                                 SnackBarWidget.errorSnackBar(
                                     context, e.message);
                               }
