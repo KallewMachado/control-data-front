@@ -255,7 +255,7 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                       OutlinedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            late final userAdminID;
+                            late final String userAdminID;
                             try {
                               if (mounted) {
                                 CustomDialogWidet.show(
