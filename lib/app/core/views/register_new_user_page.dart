@@ -316,9 +316,8 @@ class _RegisterNewUserPageState extends State<RegisterNewUserPage> {
                                     context, e.message);
                               }
                             } on PostgrestException catch (e) {
+                              await _userStore.failNewUser(userAdminID);
                               if (mounted) {
-                                await _userStore.failNewUser(userAdminID);
-                                Modular.to.pop();
                                 SnackBarWidget.errorSnackBar(
                                     context, e.message);
                               }

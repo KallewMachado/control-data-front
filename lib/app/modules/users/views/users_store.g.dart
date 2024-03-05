@@ -65,6 +65,14 @@ mixin _$UsersStore on UsersStoreBase, Store {
     return _$newUserAsyncAction.run(() => super.newUser(json));
   }
 
+  late final _$failNewUserAsyncAction =
+      AsyncAction('UsersStoreBase.failNewUser', context: context);
+
+  @override
+  Future<void> failNewUser(String id) {
+    return _$failNewUserAsyncAction.run(() => super.failNewUser(id));
+  }
+
   late final _$getAllUsersAsyncAction =
       AsyncAction('UsersStoreBase.getAllUsers', context: context);
 

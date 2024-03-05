@@ -155,6 +155,8 @@ class UserRepositoryImpl implements UserRepository {
       _appStore.endFetch();
     } on PostgrestException catch (_) {
       rethrow;
+    } on AuthException catch (_) {
+      rethrow;
     } catch (e) {
       rethrow;
     }

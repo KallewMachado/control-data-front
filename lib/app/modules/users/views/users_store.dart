@@ -90,6 +90,8 @@ abstract class UsersStoreBase with Store {
       await _repository.failNewUser(id);
     } on PostgrestException catch (_) {
       rethrow;
+    } on AuthException catch (_) {
+      rethrow;
     } catch (e) {
       rethrow;
     }
