@@ -1,10 +1,8 @@
 import 'package:control_data/app/core/model/user_model.dart';
-import 'package:control_data/app/core/store/app_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CardUserInfoWidget extends StatefulWidget {
   const CardUserInfoWidget({super.key, required this.user});
