@@ -16,6 +16,7 @@ abstract class UserRepository {
   Future<void> updatePassword(String newPassword);
   Future<void> verifyOTP(String token, String email);
   Future<void> sendForgotPasswordFromEmail(String email);
+  Future<void> failNewUser(String id);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -138,6 +139,20 @@ class UserRepositoryImpl implements UserRepository {
       UserModel user = userModelFromJson(jsonEncode(response[0]));
       _appStore.endFetch();
       return user;
+    } on PostgrestException catch (_) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> failNewUser(String id) async {
+    try {
+      _appStore.initFetch();
+      await _supabase.auth.admin.deleteUser(id);
+
+      _appStore.endFetch();
     } on PostgrestException catch (_) {
       rethrow;
     } catch (e) {
