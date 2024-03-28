@@ -33,8 +33,7 @@ class _AuthPageState extends State<AuthPage> {
 
   late StreamSubscription<InternetConnectionStatus> listener;
 
-  // ignore: unused_field
-  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  ConnectivityResult connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
@@ -98,7 +97,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     setState(() {
-      _connectionStatus = result;
+      connectionStatus = result;
     });
   }
 
@@ -111,143 +110,147 @@ class _AuthPageState extends State<AuthPage> {
     var text2Color = theme.colorScheme.secondary;
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(30),
-          child: SingleChildScrollView(
-            child: Observer(builder: (context) {
-              return Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                    Text(
-                      "Login",
-                      style: theme.textTheme.headlineLarge
-                          ?.copyWith(color: textColor),
-                    ),
-                    const SizedBox(height: 60),
-                    CustomTextFormWidget(
-                      label: const Text("E-mail"),
-                      controller: _emailController,
-                      validator: (password) {
-                        if (password == null || password.isEmpty) {
-                          return "campo vazio";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CustomTextFormWidget(
-                      maxlines: 1,
-                      label: const Text("senha"),
-                      controller: _passwordController,
-                      obscureText: _store.obscurePassword,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          _store.changeObscurePassword();
-                        },
-                        icon: _store.obscurePassword
-                            ? const Icon(Icons.remove_red_eye)
-                            : const Icon(Icons.remove),
-                      ),
-                      validator: (password) {
-                        if (password == null || password.isEmpty) {
-                          return "campo vazio";
-                        }
-                        return null;
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Modular.to.pushNamed('/sendForgot');
-                        },
-                        child: Text(
-                          'Esqueci senha',
-                          style: TextStyle(color: text2Color),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Observer(
+                builder: (context) {
+                  return Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        Text(
+                          "Login",
+                          style: theme.textTheme.headlineLarge
+                              ?.copyWith(color: textColor),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all<Color?>(
-                            textColor.withOpacity(0.3)),
-                      ),
-                      onPressed: () async {
-                        if (formKey.currentState!.validate()) {
-                          try {
-                            if (mounted) {
-                              CustomDialogWidet.show(
-                                context,
-                                barrierDismissible: false,
-                                actions: [],
-                                content: (context) => const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Fazendo login...'),
-                                    SizedBox(height: 10),
-                                    CircularProgressIndicator(),
-                                  ],
-                                ),
-                              );
+                        const SizedBox(height: 60),
+                        CustomTextFormWidget(
+                          label: const Text("E-mail"),
+                          controller: _emailController,
+                          validator: (password) {
+                            if (password == null || password.isEmpty) {
+                              return "campo vazio";
                             }
-
-                            AuthModel auth = AuthModel(
-                              id: '',
-                              email: _emailController.text.trim(),
-                              password: _passwordController.text.trim(),
-                            );
-                            await _store.login(auth);
-                            Modular.to.navigate('/home/');
-                          } on AuthException catch (e) {
-                            Modular.to.pop();
-                            if (mounted) {
-                              SnackBarWidget.errorSnackBar(context, e.message);
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextFormWidget(
+                          maxlines: 1,
+                          label: const Text("senha"),
+                          controller: _passwordController,
+                          obscureText: _store.obscurePassword,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _store.changeObscurePassword();
+                            },
+                            icon: _store.obscurePassword
+                                ? const Icon(Icons.remove_red_eye)
+                                : const Icon(Icons.remove),
+                          ),
+                          validator: (password) {
+                            if (password == null || password.isEmpty) {
+                              return "campo vazio";
                             }
-                            if (_appStore.hasInternet == false) {
-                              if (mounted) {
-                                CustomDialogWidet.show(
-                                  context,
-                                  content: (context) => const Text(
-                                      'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                            return null;
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Modular.to.pushNamed('/sendForgot');
+                            },
+                            child: Text(
+                              'Esqueci senha',
+                              style: TextStyle(color: text2Color),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        OutlinedButton(
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all<Color?>(
+                                textColor.withOpacity(0.3)),
+                          ),
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              try {
+                                if (mounted) {
+                                  CustomDialogWidet.show(
+                                    context,
+                                    barrierDismissible: false,
+                                    actions: [],
+                                    content: (context) => const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Fazendo login...'),
+                                        SizedBox(height: 10),
+                                        CircularProgressIndicator(),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                AuthModel auth = AuthModel(
+                                  id: '',
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
                                 );
+                                await _store.login(auth);
+                                Modular.to.navigate('/home/');
+                              } on AuthException catch (e) {
+                                Modular.to.pop();
+                                if (mounted) {
+                                  SnackBarWidget.errorSnackBar(
+                                      context, e.message);
+                                }
+                                if (_appStore.hasInternet == false) {
+                                  if (mounted) {
+                                    CustomDialogWidet.show(
+                                      context,
+                                      content: (context) => const Text(
+                                          'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                                    );
+                                  }
+                                }
+                              } catch (e) {
+                                Modular.to.pop();
+                                if (_appStore.hasInternet == false) {
+                                  if (mounted) {
+                                    CustomDialogWidet.show(
+                                      context,
+                                      content: (context) => const Text(
+                                          'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+                                    );
+                                  }
+                                }
                               }
                             }
-                          } catch (e) {
-                            Modular.to.pop();
-                            if (_appStore.hasInternet == false) {
-                              if (mounted) {
-                                CustomDialogWidet.show(
-                                  context,
-                                  content: (context) => const Text(
-                                      'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                                );
-                              }
-                            }
-                          }
-                        }
-                      },
-                      child: const Text("Entrar"),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        Modular.to.pushNamed('/register');
-                      },
-                      child: Text(
-                        "Register",
-                        style: TextStyle(
-                          color: text2Color,
-                          decoration: TextDecoration.underline,
+                          },
+                          child: const Text("Entrar"),
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () async {
+                            Modular.to.pushNamed('/register');
+                          },
+                          child: Text(
+                            "Register",
+                            style: TextStyle(
+                              color: text2Color,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            }),
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),
