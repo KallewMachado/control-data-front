@@ -107,6 +107,10 @@ class ConfigurationsPage extends StatelessWidget {
                     color: Colors.red,
                   ),
                 ),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(_appStore.appVersion),
               )
             ],
           ),
