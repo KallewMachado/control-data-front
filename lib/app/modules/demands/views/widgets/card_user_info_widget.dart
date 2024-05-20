@@ -1,7 +1,6 @@
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:control_data/app/core/utils/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 
