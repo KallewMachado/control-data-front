@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/modules/auth/views/auth_store.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
 
 enum Pages {
   initial(title: 'Inicio'),
-  voters(title: 'Usuarios'),
+  users(title: 'Usuarios'),
   config(title: 'Configuração');
 
   const Pages({required this.title});
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    Modular.to.navigate('/home/initial/');
+    Modular.to.navigate(routesPath.home.initial);
 
     listener = customInstance.onStatusChange.listen((status) {
       switch (status) {
@@ -67,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             actions: [
               ElevatedButton(
                   onPressed: () async {
-                    Modular.to.navigate('/');
+                    Modular.to.navigate(routesPath.home.path);
                   },
                   child: const Center(child: Text('Fechar')))
             ],
@@ -109,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           ButtonSegment<Pages>(
               value: Pages.initial, label: Text(Pages.initial.title)),
           ButtonSegment<Pages>(
-              value: Pages.voters, label: Text(Pages.voters.title)),
+              value: Pages.users, label: Text(Pages.users.title)),
           ButtonSegment<Pages>(
               value: Pages.config, label: Text(Pages.config.title)),
         ],
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
           var router = newSelection.first.name;
           setState(() {
             selection = newSelection;
-            Modular.to.navigate('/home/$router/');
+            Modular.to.navigate('${routesPath.auth.home}$router/');
           });
         },
         multiSelectionEnabled: false,
