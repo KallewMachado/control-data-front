@@ -1,3 +1,4 @@
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/core/views/widgets/custom_dialog_widget.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                               .verifyOTP(_tokenCrontroller.text.trim(),
                                   widget.email.trim())
                               .whenComplete(() => Modular.to.pop());
-                          Modular.to.pushNamed('/resetPassword');
+                          Modular.to.pushNamed(routesPath.resetPassword);
                         } on AuthException catch (e) {
                           if (context.mounted) {
                             Modular.to.pop();
