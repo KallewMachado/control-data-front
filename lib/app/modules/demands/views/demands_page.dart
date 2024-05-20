@@ -1,3 +1,4 @@
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/modules/demands/views/demands_store.dart';
 import 'package:control_data/app/modules/demands/views/widgets/card_user_info_widget.dart';
 import 'package:control_data/app/modules/demands/views/widgets/list_demands_widget.dart';
@@ -30,7 +31,8 @@ class _DemandsPageState extends State<DemandsPage> {
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed('./register', arguments: widget.user);
+          Modular.to.pushNamed('.${routesPath.demands.register}',
+              arguments: widget.user);
         },
         child: const Icon(Icons.add),
       ),
