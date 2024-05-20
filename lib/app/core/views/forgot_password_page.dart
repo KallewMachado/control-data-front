@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               .sendForgotPasswordFromEmail(_email.text.trim())
                               .whenComplete(() => Modular.to.pop());
                           Modular.to.pushNamed(
-                              '/verifyOTP?email=${_email.text.trim()}');
+                              '${routesPath.verifyOTP}?email=${_email.text.trim()}');
                         } on AuthException catch (e) {
                           Modular.to.pop();
                           if (mounted) {
