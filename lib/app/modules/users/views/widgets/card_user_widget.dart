@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 import 'package:control_data/app/core/store/app_store.dart';
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -102,7 +103,7 @@ class _CardUserWidgetState extends State<CardUserWidget> {
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10),
         onTap: () {
-          Modular.to.pushNamed('/home/demands/', arguments: widget.user);
+          Modular.to.pushNamed(routesPath.user.demands, arguments: widget.user);
         },
         leading: const Icon(Icons.person),
         title: Text(widget.user.name),
