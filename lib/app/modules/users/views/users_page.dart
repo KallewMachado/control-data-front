@@ -1,4 +1,5 @@
 import 'package:control_data/app/core/store/app_store.dart';
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:control_data/app/modules/users/views/widgets/card_user_widget.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class UsersPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                Modular.to.pushNamed('/home/register/user');
+                Modular.to.pushNamed(routesPath.home.registerUser);
               },
               child: const Text('Adicionar novo usuario'),
             ),
