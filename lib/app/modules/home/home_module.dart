@@ -21,7 +21,7 @@ class HomeModule extends Module {
       child: (_) => const HomePage(),
       children: [
         ModuleRoute('/initial', module: InitialModule()),
-        ModuleRoute('/voters', module: UserModule()),
+        ModuleRoute('/users', module: UserModule()),
         ModuleRoute('/config', module: ConfigurationsModule()),
       ],
     );
