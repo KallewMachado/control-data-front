@@ -6,6 +6,7 @@ import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:control_data/app/core/model/auth_model.dart';
 import 'package:control_data/app/core/store/app_store.dart';
+import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/core/views/widgets/custom_dialog_widget.dart';
 import 'package:control_data/app/core/views/widgets/custom_textform_widget.dart';
 import 'package:control_data/app/core/views/widgets/snackbar_widget.dart';
@@ -161,7 +162,7 @@ class _AuthPageState extends State<AuthPage> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              Modular.to.pushNamed('/sendForgot');
+                              Modular.to.pushNamed(routesPath.sendForgot);
                             },
                             child: Text(
                               'Esqueci senha',
@@ -201,7 +202,7 @@ class _AuthPageState extends State<AuthPage> {
                                   password: _passwordController.text.trim(),
                                 );
                                 await _store.login(auth);
-                                Modular.to.navigate('/home/');
+                                Modular.to.navigate(routesPath.auth.home);
                               } on AuthException catch (e) {
                                 Modular.to.pop();
                                 if (mounted) {
@@ -235,7 +236,7 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            Modular.to.pushNamed('/register');
+                            Modular.to.pushNamed(routesPath.auth.register);
                           },
                           child: Text(
                             "Register",
