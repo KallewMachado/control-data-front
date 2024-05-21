@@ -20,7 +20,14 @@ class CardDemandsWidget extends StatefulWidget {
 }
 
 class _CardDemandsWidgetState extends State<CardDemandsWidget> {
-  final appStore = Modular.get<AppStore>();
+  late final AppStore _appStore;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _appStore = Modular.get<AppStore>();
+  }
 
   void _deleteDemand() {
     developer.log(
@@ -57,7 +64,7 @@ class _CardDemandsWidgetState extends State<CardDemandsWidget> {
                     SnackBarWidget.errorSnackBar(context, e.message);
                   }
                 } catch (e) {
-                  if (appStore.hasInternet == false) {
+                  if (_appStore.hasInternet == false) {
                     if (mounted) {
                       CustomDialogWidet.show(
                         context,
