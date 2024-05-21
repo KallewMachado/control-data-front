@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:control_data/app/core/utils/enum.dart';
 import 'package:control_data/app/core/utils/routes.dart';
 import 'package:control_data/app/modules/home/views/home_store.dart';
 import 'package:control_data/app/modules/home/views/widgets/bottom_navigate_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../../core/store/app_store.dart';
@@ -33,6 +35,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _appStore = Modular.get<AppStore>();
     _homeStore = Modular.get<HomeStore>();
+
+    _homeStore.changeSelectionPage({Pages.initial});
 
     Modular.to.navigate(routesPath.home.initial);
 
@@ -82,10 +86,12 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _homeStore.selection.first.title,
-          style: theme.textTheme.titleLarge,
-        ),
+        title: Observer(builder: (context) {
+          return Text(
+            _homeStore.selection.first.title,
+            style: theme.textTheme.titleLarge,
+          );
+        }),
         centerTitle: true,
       ),
       body: const RouterOutlet(),
