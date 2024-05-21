@@ -11,20 +11,11 @@ import '../../../core/store/app_store.dart';
 import '../../../core/views/widgets/custom_dialog_widget.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
   const HomePage({super.key, this.title = 'Home'});
+  final String title;
 
   @override
   State<HomePage> createState() => _HomePageState();
-}
-
-enum Pages {
-  initial(title: 'Inicio'),
-  users(title: 'Usuarios'),
-  config(title: 'Configuração');
-
-  const Pages({required this.title});
-  final String title;
 }
 
 class _HomePageState extends State<HomePage> {
@@ -99,8 +90,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: const RouterOutlet(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton:
-          BottomNavigateWidget(selection: _homeStore.selection),
+      floatingActionButton: BottomNavigateWidget(store: _homeStore),
     );
   }
 }
