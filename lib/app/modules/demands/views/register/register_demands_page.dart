@@ -20,16 +20,32 @@ class RegisterDemandsPage extends StatefulWidget {
 }
 
 class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
-  final _store = Modular.get<DemandsStore>();
-  final _keyForm = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  late final DemandsStore _store;
+  late final GlobalKey<FormState> _keyForm;
+  late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;
 
   var uuid = const Uuid();
 
   @override
+  void initState() {
+    super.initState();
+
+    _store = Modular.get<DemandsStore>();
+    _keyForm = GlobalKey<FormState>();
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final user = widget.user;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nova Demanda'),
@@ -61,57 +77,7 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (_keyForm.currentState!.validate()) {
-                      try {
-                        if (mounted) {
-                          CustomDialogWidet.show(
-                            context,
-                            barrierDismissible: false,
-                            actions: [],
-                            content: (context) => const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Salvando...'),
-                                SizedBox(height: 10),
-                                CircularProgressIndicator(),
-                              ],
-                            ),
-                          );
-                        }
-                        var userCreated = _store.hive.userBox.values.first.id;
-
-                        String solicitationDate = DateTime.now().toString();
-                        Map<String, dynamic> json = {
-                          "id": uuid.v4(),
-                          "title": _titleController.text.trim(),
-                          "description": _descriptionController.text.trim(),
-                          "solicitation_date": solicitationDate,
-                          "done_date": null,
-                          "done": false,
-                          "user_id": user.id,
-                          "user_created": userCreated,
-                        };
-
-                        await _store.createDemands(json);
-                        if (mounted) {
-                          SnackBarWidget.successSnackBar(
-                              context, 'Demanda criada com Sucesso!');
-                        }
-
-                        await _store
-                            .getAllDemandsByUser(user.id)
-                            .whenComplete(() => Modular.to.pop());
-
-                        Modular.to.pop();
-                      } on PostgrestException catch (e) {
-                        if (mounted) {
-                          SnackBarWidget.errorSnackBar(context, e.message);
-                        }
-                      }
-                    }
-                  },
+                  onPressed: _validation,
                   child: const Text('Salvar'),
                 ),
               ],
@@ -120,5 +86,59 @@ class _RegisterDemandsPageState extends State<RegisterDemandsPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _validation() async {
+    if (_keyForm.currentState!.validate()) {
+      try {
+        final user = widget.user;
+
+        if (mounted) {
+          CustomDialogWidet.show(
+            context,
+            barrierDismissible: false,
+            actions: [],
+            content: (context) => const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Salvando...'),
+                SizedBox(height: 10),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        }
+        var userCreated = _store.hive.userBox.values.first.id;
+
+        String solicitationDate = DateTime.now().toString();
+        Map<String, dynamic> json = {
+          "id": uuid.v4(),
+          "title": _titleController.text.trim(),
+          "description": _descriptionController.text.trim(),
+          "solicitation_date": solicitationDate,
+          "done_date": null,
+          "done": false,
+          "user_id": user.id,
+          "user_created": userCreated,
+        };
+
+        await _store.createDemands(json);
+        if (mounted) {
+          SnackBarWidget.successSnackBar(
+              context, 'Demanda criada com Sucesso!');
+        }
+
+        await _store
+            .getAllDemandsByUser(user.id)
+            .whenComplete(() => Modular.to.pop());
+
+        Modular.to.pop();
+      } on PostgrestException catch (e) {
+        if (mounted) {
+          SnackBarWidget.errorSnackBar(context, e.message);
+        }
+      }
+    }
   }
 }
