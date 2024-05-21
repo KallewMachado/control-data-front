@@ -18,6 +18,12 @@ ThemeData get lightTheme => ThemeData(
             backgroundColor: MaterialStateProperty.all<Color?>(
                 lightColorScheme.primaryContainer)),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color?>(
+              lightColorScheme.primary.withOpacity(0.3)),
+        ),
+      ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
           side: MaterialStateProperty.all(
@@ -51,6 +57,12 @@ ThemeData get darkTheme => ThemeData(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color?>(
                 darkColorScheme.primaryContainer)),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          overlayColor:
+              MaterialStateProperty.all<Color?>(darkColorScheme.primary),
+        ),
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
