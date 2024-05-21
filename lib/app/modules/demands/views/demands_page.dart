@@ -17,22 +17,28 @@ class DemandsPage extends StatefulWidget {
 }
 
 class _DemandsPageState extends State<DemandsPage> {
-  final _store = Modular.get<DemandsStore>();
+  late final DemandsStore _store;
+
   @override
   void initState() {
-    _store.getAllDemandsByUser(widget.user.id);
     super.initState();
+
+    _store = Modular.get<DemandsStore>();
+    _store.getAllDemandsByUser(widget.user.id);
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed('.${routesPath.demands.register}',
-              arguments: widget.user);
+          Modular.to.pushNamed(
+            '.${routesPath.demands.register}',
+            arguments: widget.user,
+          );
         },
         child: const Icon(Icons.add),
       ),
