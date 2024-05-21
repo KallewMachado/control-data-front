@@ -20,6 +20,9 @@ ThemeData get lightTheme => ThemeData(
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
+          side: MaterialStateProperty.all(
+            const BorderSide(color: Colors.transparent),
+          ),
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
@@ -51,6 +54,9 @@ ThemeData get darkTheme => ThemeData(
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
+          side: MaterialStateProperty.all(
+            const BorderSide(color: Colors.transparent),
+          ),
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
