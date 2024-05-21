@@ -1,14 +1,17 @@
 import 'package:mobx/mobx.dart';
 
+import 'home_page.dart';
+
 part 'home_store.g.dart';
 
 class HomeStore = HomeStoreBase with _$HomeStore;
 
 abstract class HomeStoreBase with Store {
   @observable
-  int counter = 0;
+  Set<Pages> selection = <Pages>{Pages.initial};
 
-  Future<void> increment() async {
-    counter = counter + 1;
+  @action
+  changeSelectionPage(Set<Pages> newSelection) {
+    selection = newSelection;
   }
 }
