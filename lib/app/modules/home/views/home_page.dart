@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:control_data/app/core/utils/routes.dart';
+import 'package:control_data/app/modules/home/views/home_store.dart';
+import 'package:control_data/app/modules/home/views/widgets/bottom_navigate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -27,7 +29,7 @@ enum Pages {
 
 class _HomePageState extends State<HomePage> {
   late final AppStore _appStore;
-  Set<Pages> selection = <Pages>{Pages.initial};
+  late final HomeStore _homeStore;
 
   late StreamSubscription<InternetConnectionStatus> listener;
 
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _appStore = Modular.get<AppStore>();
+    _homeStore = Modular.get<HomeStore>();
 
     Modular.to.navigate(routesPath.home.initial);
 
@@ -86,39 +89,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           title: Text(
-            selection.first.title,
+            _homeStore.selection.first.title,
             style: theme.textTheme.titleLarge,
           ),
-          centerTitle: true),
-      body: const RouterOutlet(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SegmentedButton<Pages>(
-        style: ButtonStyle(
-          side: MaterialStateProperty.all(
-            const BorderSide(color: Colors.transparent),
-          ),
+          centerTitle: true,
         ),
-        showSelectedIcon: false,
-        segments: <ButtonSegment<Pages>>[
-          ButtonSegment<Pages>(
-              value: Pages.initial, label: Text(Pages.initial.title)),
-          ButtonSegment<Pages>(
-              value: Pages.users, label: Text(Pages.users.title)),
-          ButtonSegment<Pages>(
-              value: Pages.config, label: Text(Pages.config.title)),
-        ],
-        selected: selection,
-        onSelectionChanged: (Set<Pages> newSelection) {
-          var router = newSelection.first.name;
-          setState(() {
-            selection = newSelection;
-            Modular.to.navigate('${routesPath.auth.home}$router/');
-          });
-        },
-        multiSelectionEnabled: false,
-      ),
-    );
+        body: const RouterOutlet(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton:
+            BottomNavigateWidget(selection: _homeStore.selection));
   }
 }
