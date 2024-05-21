@@ -27,6 +27,16 @@ abstract class DemandsStoreBase with Store {
     demandsList.add(response);
   }
 
+  int getYearsOld(DateTime dateBirth) {
+    int yearsOld = (DateTime.now().difference(dateBirth).inDays / 365).round();
+    return yearsOld;
+  }
+
+  String getFullName(String name) {
+    String fullName = '${name.split(' ').first} ${name.split(' ').last}';
+    return fullName;
+  }
+
   @action
   Future<void> updateDemands(Map<String, dynamic> json, String id) async {
     var response = await _repository.updateDemands(json, id);
