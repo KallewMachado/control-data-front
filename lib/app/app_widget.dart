@@ -20,7 +20,6 @@ class AppWidget extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        title: 'Control Data',
         themeMode: appStore.themeMode,
         theme: lightTheme,
         darkTheme: darkTheme,
