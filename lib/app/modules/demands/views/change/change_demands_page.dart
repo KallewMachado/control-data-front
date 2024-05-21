@@ -20,16 +20,22 @@ class ChangeDemandsPage extends StatefulWidget {
 }
 
 class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
-  final _store = Modular.get<DemandsStore>();
-  final _keyForm = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  late final DemandsStore _store;
+  late final GlobalKey<FormState> _keyForm;
+  late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;
 
   var uuid = const Uuid();
 
   @override
   void initState() {
     super.initState();
+
+    _store = Modular.get<DemandsStore>();
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _keyForm = GlobalKey<FormState>();
+
     _titleController.text = widget.demand.title;
     _descriptionController.text = widget.demand.description ?? '';
   }
@@ -43,7 +49,6 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final demand = widget.demand;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar Demanda'),
@@ -75,49 +80,7 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (_keyForm.currentState!.validate()) {
-                      try {
-                        if (mounted) {
-                          CustomDialogWidet.show(
-                            context,
-                            barrierDismissible: false,
-                            actions: [],
-                            content: (context) => const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Salvando...'),
-                                SizedBox(height: 10),
-                                CircularProgressIndicator(),
-                              ],
-                            ),
-                          );
-                        }
-                        Map<String, dynamic> json = {
-                          "title": _titleController.text.trim(),
-                          "description": _descriptionController.text.trim(),
-                        };
-
-                        await _store.updateDemands(json, demand.id);
-                        if (mounted) {
-                          SnackBarWidget.successSnackBar(
-                              context, 'Demanda Alterada com Sucesso!');
-                        }
-
-                        await _store
-                            .getAllDemandsByUser(demand.userId)
-                            .whenComplete(() => Modular.to.pop());
-
-                        Modular.to.pop();
-                      } on PostgrestException catch (e) {
-                        Modular.to.pop();
-                        if (mounted) {
-                          SnackBarWidget.errorSnackBar(context, e.message);
-                        }
-                      }
-                    }
-                  },
+                  onPressed: _validation,
                   child: const Text('Salvar'),
                 ),
                 TextButton(
@@ -133,5 +96,50 @@ class _ChangeDemandsPageState extends State<ChangeDemandsPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _validation() async {
+    if (_keyForm.currentState!.validate()) {
+      try {
+        final demand = widget.demand;
+        if (mounted) {
+          CustomDialogWidet.show(
+            context,
+            barrierDismissible: false,
+            actions: [],
+            content: (context) => const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Salvando...'),
+                SizedBox(height: 10),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        }
+        Map<String, dynamic> json = {
+          "title": _titleController.text.trim(),
+          "description": _descriptionController.text.trim(),
+        };
+
+        await _store.updateDemands(json, demand.id);
+        if (mounted) {
+          SnackBarWidget.successSnackBar(
+              context, 'Demanda Alterada com Sucesso!');
+        }
+
+        await _store
+            .getAllDemandsByUser(demand.userId)
+            .whenComplete(() => Modular.to.pop());
+
+        Modular.to.pop();
+      } on PostgrestException catch (e) {
+        Modular.to.pop();
+        if (mounted) {
+          SnackBarWidget.errorSnackBar(context, e.message);
+        }
+      }
+    }
   }
 }
