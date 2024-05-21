@@ -15,6 +15,8 @@ class ConfigurationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Observer(
         builder: (context) {
@@ -25,27 +27,23 @@ class ConfigurationsPage extends StatelessWidget {
               children: [
                 Text(
                   'Thema',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: textTheme.titleLarge,
                 ),
                 RadioListTile<ThemeMode>(
                   title: const Text('Escuro'),
                   value: ThemeMode.dark,
                   groupValue: _appStore.themeMode,
-                  onChanged: (mode) async {
-                    await _appStore.handleThemeModel(mode);
-                  },
+                  onChanged: _appStore.handleThemeModel,
                 ),
                 RadioListTile<ThemeMode>(
                   title: const Text('Claro'),
                   value: ThemeMode.light,
                   groupValue: _appStore.themeMode,
-                  onChanged: (mode) async {
-                    await _appStore.handleThemeModel(mode);
-                  },
+                  onChanged: _appStore.handleThemeModel,
                 ),
                 Text(
                   "User",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: textTheme.titleLarge,
                 ),
                 const SizedBox(height: 10),
                 OutlinedButton(
@@ -61,8 +59,8 @@ class ConfigurationsPage extends StatelessWidget {
                       (timeStamp) {
                         CustomDialogWidet.show(
                           context,
-                          title: (context) => const Text(
-                              ' Tem certeza que deseja excluir usuario?'),
+                          title: (context) =>
+                              const Text(' Tem certeza que deseja sair?'),
                           content: (context) => const SizedBox(height: 0),
                           actions: [
                             ElevatedButton(
