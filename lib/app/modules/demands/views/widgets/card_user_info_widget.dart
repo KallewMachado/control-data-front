@@ -1,5 +1,6 @@
 import 'package:control_data/app/core/model/user_model.dart';
 import 'package:control_data/app/core/utils/routes.dart';
+import 'package:control_data/app/modules/demands/views/demands_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,14 @@ class CardUserInfoWidget extends StatefulWidget {
 }
 
 class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
+  late final DemandsStore store;
+
+  @override
+  void initState() {
+    super.initState();
+    store = Modular.get<DemandsStore>();
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
@@ -32,8 +41,7 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                    '${user.name.split(' ').first} ${user.name.split(' ').last}'),
+                Text(store.getFullName(user.name)),
                 Text(user.email),
                 Text(user.cpf ?? ''),
                 Text(user.street),
@@ -44,8 +52,7 @@ class _CardUserInfoWidgetState extends State<CardUserInfoWidget> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                    '${(DateTime.now().difference(user.dateBirth).inDays / 365).round()} anos'),
+                Text('${store.getYearsOld(user.dateBirth)} anos'),
                 Text(user.fone),
                 Text(date.format(user.dateBirth)),
                 Text(user.num),
