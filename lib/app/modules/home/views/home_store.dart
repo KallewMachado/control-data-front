@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 
-import 'home_page.dart';
+import '../../../core/utils/enum.dart';
 
 part 'home_store.g.dart';
 
