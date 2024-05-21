@@ -26,11 +26,11 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final _store = Modular.get<AuthStore>();
-  final _appStore = Modular.get<AppStore>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  late final AuthStore _store;
+  late final AppStore _appStore;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final GlobalKey<FormState> _formKey;
 
   late StreamSubscription<InternetConnectionStatus> listener;
 
@@ -41,6 +41,12 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     super.initState();
+    _store = Modular.get<AuthStore>();
+    _appStore = Modular.get<AppStore>();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
+
     initConnectivity();
 
     listener = InternetConnectionChecker().onStatusChange.listen((status) {
@@ -75,6 +81,8 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
     _connectivitySubscription.cancel();
     listener.cancel();
     super.dispose();
@@ -102,13 +110,12 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
-  checkConnectivity() {}
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var textColor = theme.colorScheme.primary;
     var text2Color = theme.colorScheme.secondary;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -118,7 +125,7 @@ class _AuthPageState extends State<AuthPage> {
               child: Observer(
                 builder: (context) {
                   return Form(
-                    key: formKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         Text(
@@ -176,62 +183,7 @@ class _AuthPageState extends State<AuthPage> {
                             overlayColor: MaterialStateProperty.all<Color?>(
                                 textColor.withOpacity(0.3)),
                           ),
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              try {
-                                if (mounted) {
-                                  CustomDialogWidet.show(
-                                    context,
-                                    barrierDismissible: false,
-                                    actions: [],
-                                    content: (context) => const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text('Fazendo login...'),
-                                        SizedBox(height: 10),
-                                        CircularProgressIndicator(),
-                                      ],
-                                    ),
-                                  );
-                                }
-                                AuthModel auth = AuthModel(
-                                  id: '',
-                                  email: _emailController.text.trim(),
-                                  password: _passwordController.text.trim(),
-                                );
-                                await _store.login(auth);
-                                Modular.to.navigate(routesPath.auth.home);
-                              } on AuthException catch (e) {
-                                Modular.to.pop();
-                                if (mounted) {
-                                  SnackBarWidget.errorSnackBar(
-                                      context, e.message);
-                                }
-                                if (_appStore.hasInternet == false) {
-                                  if (mounted) {
-                                    CustomDialogWidet.show(
-                                      context,
-                                      content: (context) => const Text(
-                                          'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                                    );
-                                  }
-                                }
-                              } catch (e) {
-                                Modular.to.pop();
-                                if (_appStore.hasInternet == false) {
-                                  if (mounted) {
-                                    CustomDialogWidet.show(
-                                      context,
-                                      content: (context) => const Text(
-                                          'falha na conexão, verifique sua conexão com a internet e tente novamente'),
-                                    );
-                                  }
-                                }
-                              }
-                            }
-                          },
+                          onPressed: _validation,
                           child: const Text("Entrar"),
                         ),
                         TextButton(
@@ -256,5 +208,60 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _validation() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        if (mounted) {
+          CustomDialogWidet.show(
+            context,
+            barrierDismissible: false,
+            actions: [],
+            content: (context) => const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Fazendo login...'),
+                SizedBox(height: 10),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        }
+        AuthModel auth = AuthModel(
+          id: '',
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        await _store.login(auth);
+        Modular.to.navigate(routesPath.auth.home);
+      } on AuthException catch (e) {
+        Modular.to.pop();
+        if (mounted) {
+          SnackBarWidget.errorSnackBar(context, e.message);
+        }
+        if (_appStore.hasInternet == false) {
+          if (mounted) {
+            CustomDialogWidet.show(
+              context,
+              content: (context) => const Text(
+                  'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+            );
+          }
+        }
+      } catch (e) {
+        Modular.to.pop();
+        if (_appStore.hasInternet == false) {
+          if (mounted) {
+            CustomDialogWidet.show(
+              context,
+              content: (context) => const Text(
+                  'falha na conexão, verifique sua conexão com a internet e tente novamente'),
+            );
+          }
+        }
+      }
+    }
   }
 }
