@@ -88,17 +88,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _homeStore.selection.first.title,
-            style: theme.textTheme.titleLarge,
-          ),
-          centerTitle: true,
+      appBar: AppBar(
+        title: Text(
+          _homeStore.selection.first.title,
+          style: theme.textTheme.titleLarge,
         ),
-        body: const RouterOutlet(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton:
-            BottomNavigateWidget(selection: _homeStore.selection));
+        centerTitle: true,
+      ),
+      body: const RouterOutlet(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton:
+          BottomNavigateWidget(selection: _homeStore.selection),
+    );
   }
 }
