@@ -11,7 +11,7 @@ abstract class HomeStoreBase with Store {
   Set<Pages> selection = <Pages>{Pages.initial};
 
   @action
-  changeSelectionPage(Set<Pages> newSelection) {
+  void changeSelectionPage(Set<Pages> newSelection) {
     selection = newSelection;
   }
 }

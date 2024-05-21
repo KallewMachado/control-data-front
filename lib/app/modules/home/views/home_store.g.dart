@@ -29,7 +29,7 @@ mixin _$HomeStore on HomeStoreBase, Store {
       ActionController(name: 'HomeStoreBase', context: context);
 
   @override
-  dynamic changeSelectionPage(Set<Pages> newSelection) {
+  void changeSelectionPage(Set<Pages> newSelection) {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.changeSelectionPage');
     try {
