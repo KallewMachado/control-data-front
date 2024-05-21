@@ -2,14 +2,11 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:control_data/app/core/utils/routes.dart';
-import 'package:control_data/app/modules/auth/views/auth_store.dart';
-import 'package:control_data/app/modules/users/views/users_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../../core/store/app_store.dart';
 import '../../../core/views/widgets/custom_dialog_widget.dart';
-import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -29,10 +26,7 @@ enum Pages {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeStore store = Modular.get<HomeStore>();
-  final UsersStore usersStore = Modular.get<UsersStore>();
-  final AppStore _appStore = Modular.get<AppStore>();
-  final AuthStore authStore = Modular.get<AuthStore>();
+  late final AppStore _appStore;
   Set<Pages> selection = <Pages>{Pages.initial};
 
   late StreamSubscription<InternetConnectionStatus> listener;
@@ -44,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _appStore = Modular.get<AppStore>();
 
     Modular.to.navigate(routesPath.home.initial);
 
