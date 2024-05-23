@@ -20,9 +20,24 @@ class HomeModule extends Module {
       Modular.initialRoute,
       child: (_) => const HomePage(),
       children: [
-        ModuleRoute('/initial', module: InitialModule()),
-        ModuleRoute('/users', module: UserModule()),
-        ModuleRoute('/config', module: ConfigurationsModule()),
+        ModuleRoute(
+          '/initial',
+          module: InitialModule(),
+          transition: TransitionType.fadeIn,
+          duration: const Duration(milliseconds: 500),
+        ),
+        ModuleRoute(
+          '/users',
+          module: UserModule(),
+          transition: TransitionType.fadeIn,
+          duration: const Duration(milliseconds: 500),
+        ),
+        ModuleRoute(
+          '/config',
+          module: ConfigurationsModule(),
+          transition: TransitionType.fadeIn,
+          duration: const Duration(milliseconds: 500),
+        ),
       ],
     );
     r.child('/register/user', child: (_) => const RegisterUserPage());

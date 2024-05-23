@@ -86,12 +86,14 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Observer(builder: (context) {
-          return Text(
-            _homeStore.selection.first.title,
-            style: theme.textTheme.titleLarge,
-          );
-        }),
+        title: Observer(
+          builder: (context) {
+            return Text(
+              _homeStore.selection.first.title,
+              style: theme.textTheme.titleLarge,
+            );
+          },
+        ),
         centerTitle: true,
       ),
       body: const RouterOutlet(),
